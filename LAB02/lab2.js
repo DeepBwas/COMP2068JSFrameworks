@@ -15,3 +15,24 @@ const validation = {
         }
     }
 };
+// Start the prompt
+prompt.start();
+prompt.get(validation, function (err, result) {
+    // Get the user's choice
+    if (err) {
+        console.error(err);
+        return;
+    }
+    let choice = result.Choice.toUpperCase();
+    if (choice === "R") {
+        console.log("You Chose: Rock");
+    }
+    else if (choice === "P") {
+        console.log("You Chose: Paper");
+    }
+    else if (choice === "S") {
+        console.log("You Chose: Scissors");
+    }
+    
+    
+});
