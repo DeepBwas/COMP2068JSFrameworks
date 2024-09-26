@@ -44,5 +44,34 @@ prompt.get(validation, function (err, result) {
         computerChoice = "Rock";
     }
     console.log(`Computer Chose: ${computerChoice}`);
-    
+    // Implement the game logic
+    switch (choice) {
+        case "R":
+            if (computerChoice === "Rock") {
+                console.log("It's a tie!");
+            } else if (computerChoice === "Paper") {
+                console.log("Computer Wins!");
+            } else {
+                console.log("User Wins!");
+            }
+            break;
+        case "P":
+            if (computerChoice === "Rock") {
+                console.log("User Wins!");
+            } else if (computerChoice === "Paper") {
+                console.log("It's a tie!");
+            } else {
+                console.log("Computer Wins!");
+            }
+            break;
+        case "S":
+            if (computerChoice === "Rock") {
+                console.log("Computer Wins!");
+            } else if (computerChoice === "Paper") {
+                console.log("User Wins!");
+            } else {
+                console.log("It's a tie!");
+            }
+            break;
+    }
 });
