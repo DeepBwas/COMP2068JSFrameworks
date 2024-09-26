@@ -33,6 +33,16 @@ prompt.get(validation, function (err, result) {
     else if (choice === "S") {
         console.log("You Chose: Scissors");
     }
-    
+    // Get the computer's choice
+    const randomNum = Math.random();
+    let computerChoice;
+    if (randomNum <= 0.34) {
+        computerChoice = "Paper";
+    } else if (randomNum <= 0.67) {
+        computerChoice = "Scissors";
+    } else {
+        computerChoice = "Rock";
+    }
+    console.log(`Computer Chose: ${computerChoice}`);
     
 });
