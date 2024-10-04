@@ -21,6 +21,14 @@ app.use('/lab3', (req, res) => {
     const numX = Number(x);
     const numY = Number(y);
 
+    // Parameters validation
+    if (!method || x === null || y === null || !(Number(x)) || !(Number(y))) {
+        res.statusCode = 400;
+        res.end('Error: Invalid query parameters. Please use the format /lab3?method=add&x=16&y=4 where method can be add, subtract, multiply, or divide, and x and y are numbers.');
+        return;
+    }
+
+
     let result = 0;
 
     if (method === 'add') {
