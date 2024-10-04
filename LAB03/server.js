@@ -16,22 +16,23 @@ app.use('/lab3', (req, res) => {
     const y = url.searchParams.get('y');
 
     // Parameters for Validation query parameters
-    if (!method || x === null || y === null || isNaN(Number(x)) || isNaN(Number(y))) {
+    if (!method || x === null || y === null || isNaN(Number(x)) || isNaN(Number(y))) { // Checking if method, x, or y is missing or not a number
         res.statusCode = 400;
         res.end('Error: Invalid query parameters. Please use the format /lab3?method=add&x=16&y=4 where method can be add, subtract, multiply, or divide, and x and y are numbers.');
         return;
     }
 
     // Checking for any other query parameters
-    const allowedParams = ['method', 'x', 'y'];
-    for (const param of url.searchParams.keys()) {
+    const allowedParams = ['method', 'x', 'y']; // Only method, x, and y are allowed
+    for (const param of url.searchParams.keys()) { // Checking if any other bad query parameters are present
         if (!allowedParams.includes(param)) {
             res.statusCode = 400;
             res.end('Error: Invalid query parameters. Only method, x, and y are allowed.');
             return;
         }
     }
-
+    
+    // Convert x and y to numbers
     const numX = Number(x);
     const numY = Number(y);
 
@@ -72,10 +73,10 @@ app.use('/', (req, res) => {
     res.end('Welcome to the calculator server. Use /lab3 with method, x, and y query parameters.');
 });
 
-// Create an HTTP server and pass the connect app as the request handler
+// Creating an HTTP server and pass the connect app as the request handler
 const server = http.createServer(app);
 
-// Make the server listen on port 3000
+// Make the server listen to port 3000
 server.listen(3000, () => {
     console.log('Server is listening on http://localhost:3000');
 });
