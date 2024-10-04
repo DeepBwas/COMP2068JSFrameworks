@@ -18,6 +18,40 @@ app.use('/lab3', (req, res) => {
     // The response should show the calculation and the result
     // The output should be like this 16 + 4 = 20
     res.end(`${numX} ${method} ${numY} = ${result}`);
+    const numX = Number(x);
+    const numY = Number(y);
+
+    let result = 0;
+
+    if (method === 'add') {
+        result = numX + numY;
+    } else if (method === 'subtract') {
+        result = numX - numY;
+    } else if (method === 'multiply') {
+        result = numX * numY;
+    } else if (method === 'divide') {
+        result = numX / numY;
+    } else {
+        res.statusCode = 400;
+        res.end('Error: Invalid method. Please use one of the following methods: add, subtract, multiply, divide.');
+        return;
+    }
+
+    let methodSymbol;
+    if (method === 'add') {
+        methodSymbol = '+';
+    } else if (method === 'subtract') {
+        methodSymbol = '-';
+    } else if (method === 'multiply') {
+        methodSymbol = '*';
+    } else if (method === 'divide') {
+        methodSymbol = '/';
+    }
+
+    // The response should show the calculation and the result
+    // The output should be like this 16 + 4 = 20
+    res.end(`${numX} ${methodSymbol} ${numY} = ${result}`);
+
 });
 
 // Middleware to handle requests to /
