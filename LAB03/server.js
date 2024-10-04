@@ -15,19 +15,25 @@ app.use('/lab3', (req, res) => {
     const x = url.searchParams.get('x');
     const y = url.searchParams.get('y');
 
-    // The response should show the calculation and the result
-    // The output should be like this 16 + 4 = 20
-    res.end(`${numX} ${method} ${numY} = ${result}`);
-    const numX = Number(x);
-    const numY = Number(y);
-
-    // Parameters validation
-    if (!method || x === null || y === null || !(Number(x)) || !(Number(y))) {
+    // Parameters for Validation query parameters
+    if (!method || x === null || y === null || isNaN(Number(x)) || isNaN(Number(y))) {
         res.statusCode = 400;
         res.end('Error: Invalid query parameters. Please use the format /lab3?method=add&x=16&y=4 where method can be add, subtract, multiply, or divide, and x and y are numbers.');
         return;
     }
 
+    // Checking for any other query parameters
+    const allowedParams = ['method', 'x', 'y'];
+    for (const param of url.searchParams.keys()) {
+        if (!allowedParams.includes(param)) {
+            res.statusCode = 400;
+            res.end('Error: Invalid query parameters. Only method, x, and y are allowed.');
+            return;
+        }
+    }
+
+    const numX = Number(x);
+    const numY = Number(y);
 
     let result = 0;
 
@@ -59,7 +65,6 @@ app.use('/lab3', (req, res) => {
     // The response should show the calculation and the result
     // The output should be like this 16 + 4 = 20
     res.end(`${numX} ${methodSymbol} ${numY} = ${result}`);
-
 });
 
 // Middleware to handle requests to /
