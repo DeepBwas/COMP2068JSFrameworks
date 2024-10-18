@@ -104,6 +104,54 @@
   border: 1px #fcee0a dotted;
 }
 
+/* Contact Me Section */
+.contact-me {
+  padding-top: 5rem;
+}
+.contact-me-container {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.contact-me-h2 {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 2.5rem;
+  color: #f5f5f5;
+  text-decoration: underline 2px #fcee0a;
+}
+
+.contact-me-text {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 1.25rem;
+  color: #f5f5f5;
+}
+
+.contact-me-container form {
+  color: #f5f5f5;
+}
+
+.contact-me-btn {
+  background-color: #fcee0a;
+  color: #0e0e0e;
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  transition: 0.5s;
+  border: 1px #0e0e0e solid;
+  font-size: 1.2rem;
+}
+
+.contact-me-btn:hover {
+  background-color: #0e0e0e;
+  color: #fcee0a;
+  border: 1px #fcee0a dotted;
+}
+
+.contact-me-btn:active {
+  transform: scale(0.95);
+}
+
 /* Foooter Styling */
 footer {
   background-color: #2a2a2a;

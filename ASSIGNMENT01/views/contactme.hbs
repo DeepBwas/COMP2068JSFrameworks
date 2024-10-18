@@ -1,2 +1,27 @@
-<h2>Hey there bro!</h2>
-<p>This is the contact me page of my portfolio.</p>
+<div class="container-fluid contact-me" style="background-image: url('/images/age-of-dark-moon-er-art.jpeg'); background-size: cover; background-position: center; min-height: 100vh;">
+    <div class="container w-50 p-5 rounded contact-me-container">
+        <h2 class="text-center contact-me-h2">Contact Me</h1>
+        <p class="text-center contact-me-text">Have any question or query? Feel free to reach out to me.</p>
+        <form action="/contactme" method="POST">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+                <div class="col">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="contact-me-btn">Submit</button>
+        </form>
+    </div>
+</div>
