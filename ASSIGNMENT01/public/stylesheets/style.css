@@ -1,7 +1,247 @@
-body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/* Custom Fonts */
+@font-face {
+  font-family: 'Rolf';
+  src: url(../fonts/Rolf-Medium.otf);
+}
+@font-face {
+  font-family: 'Arida';
+  src: url(../fonts/Arida-Regular.ttf);
+}
+@font-face {
+  font-family: 'Nata';
+  src: url(../fonts/Nata-Light.otf);
+}
+@font-face {
+  font-family: 'Robusto';
+  src: url(../fonts/Robusto-Black.ttf);
+}
+@font-face {
+  font-family: 'SF-Pro';
+  src: url(../fonts/SF-Pro.otf);
 }
 
-a {
-  color: #00B7FF;
+/* Header and Navbar */
+.nav-pills .nav-link {
+  color: white;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #fcee0a;
+  color: #0e0e0e;
+}
+
+.express-header {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-family: 'SF-Pro', sans-serif;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-image {
+  width: auto;
+  height: 2rem;
+}
+
+/* Main Content */
+
+
+/* Foooter Styling */
+footer{
+  background-color: #2a2a2a;
+  padding-top: 2vw;
+}
+.go-up{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.go-up div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 6vw;
+  cursor: pointer;
+}
+.go-up svg{
+  width: 2vw;
+  height: 2vw;
+  transition: 0.6s;
+  color: #f5f5f5;
+}
+.go-up p{
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 0.8vw;
+  color: #f5f5f5;
+  text-align: center;
+  line-height: 0.2vw;
+  margin-top: 0.5rem;
+}
+.go-up div:hover svg{
+  transform: translateY(-0.5vw);
+}
+.footer-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5vw;
+}
+.footer-logo img{
+  width: 20vw;
+  height: auto;
+  padding-left: 0.9vw;
+}
+.love{
+  text-align: center;
+  padding-bottom: 2vw;
+  user-select: none;
+}
+.love p{
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 1vw;
+  color: #f5f5f5;
+  text-align: center;
+}
+.footer-langs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 1vw;
+}
+.footer-langs span{
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 0.8vw;
+  color: #0e0e0e;
+  text-align: center;
+  gap: 0.5vw;
+  background-color: #fcee0a;
+  border-radius: 5px;
+  padding: 0.3vw;
+  border: 1px #0e0e0e dashed;
+}
+.love div p{
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 0.8vw;
+  color: #f5f5f5;
+  text-align: center;
+}
+.love p:nth-child(1) i{
+  color: #ff0000;
+}
+.cr-text{
+  user-select: all;
+}
+@media screen and (max-width: 640px){
+  footer{
+      padding-top: 4.25vw;
+      padding-bottom: 4.75vw;
+  }
+  .go-up{
+      padding-bottom: 2vw;
+  }
+  .go-up div{
+      width: 40vw;
+  }
+  .go-up svg{
+      width: 6vw;
+      height: 6vw;
+  }
+  .go-up p{
+      font-size: 3vw;
+  }
+  .footer-logo img{
+      width: 70vw;
+      height: auto;
+      margin-bottom: -2vw;
+      padding-left: 3vw;
+  }
+  .love p{
+      font-size: 4.5vw;
+  }
+  .footer-langs span{
+      font-size: 3.5vw;
+  }
+  .love div p{
+      font-size: 3.5vw;
+  }
+}
+@media screen and (min-width: 641px) and (max-width: 768px){
+  footer{
+      padding-top: 2.5vw;
+      padding-bottom: 2.5vw;
+  }
+  .go-up{
+      padding-bottom: 2vw;
+  }
+  .go-up div{
+      width: 20vw;
+  }
+  .go-up svg{
+      width: 5vw;
+      height: 5vw;
+  }
+  .go-up p{
+      font-size: 2vw;
+  }
+  .footer-logo img{
+      width: 60vw;
+      height: auto;
+      padding-left: 2.9vw;
+      margin-bottom: -2.25vw;
+  }
+  .love p{
+      font-size: 3vw;
+  }
+  .footer-langs span{
+      font-size: 2.5vw;
+  }
+  .love div p{
+      font-size: 2.5vw;
+  }
+}
+@media screen and (min-width: 769px) and (max-width: 1024px){
+  footer{
+      padding-top: 2vw;
+      padding-bottom: 2vw;
+  }
+  .go-up{
+      padding-bottom: 2vw;
+  }
+  .go-up div{
+      width: 20vw;
+  }
+  .go-up svg{
+      width: 4vw;
+      height: 4vw;
+  }
+  .go-up p{
+      font-size: 2vw;
+  }
+  .footer-logo img{
+      width: 35vw;
+      height: auto;
+      margin-bottom: -3vw;
+  }
+  .love p{
+      font-size: 2vw;
+  }
+  .footer-langs span{
+      font-size: 1.5vw;
+  }
+  .love div p{
+      font-size: 1.5vw;
+  }
 }
