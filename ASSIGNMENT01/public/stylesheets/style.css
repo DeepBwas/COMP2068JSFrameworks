@@ -140,6 +140,7 @@
   transition: 0.5s;
   border: 1px #0e0e0e solid;
   font-size: 1.2rem;
+  margin-top: 2rem;
 }
 
 .contact-me-btn:hover {
@@ -150,6 +151,140 @@
 
 .contact-me-btn:active {
   transform: scale(0.95);
+}
+
+/* Projects Section */
+.projects-title {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 2.5rem;
+  color: #f5f5f5;
+  text-decoration: underline 2px #fcee0a;
+}
+.projects-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 3rem;
+}
+
+.projects-card-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 3rem;
+}
+.project-card {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #f5f5f5;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 25%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px #fcee0a solid;
+}
+.project-card-image {
+  border-radius: 6px;
+}
+.project-link {
+  text-decoration: none;
+}
+.card-body h5 {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 1.5rem;
+  color: #0e0e0e;
+}
+.card-body p {
+  margin-top: 0.4rem;
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 1rem;
+  color: #0e0e0e;
+}
+.techs-used {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 0.75rem;
+  color: #0e0e0e;
+  background-color: #fcee0a;
+  border-radius: 5px;
+  border: 1px #0e0e0e dotted;
+  padding: 0.25rem;
+}
+.codebutton, .demobutton{
+  position: relative;
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 0.8vw;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(to right, #e6bc03, #dd0000);
+  color: #f5f5f5;
+  overflow: hidden;
+  margin-right: 0.2rem;
+}
+.codebutton svg, .demobutton svg{
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.5em;
+}
+.codebutton span, .demobutton span{
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8em 1.2em 0.8em 1.05em;
+}
+.codebutton::before, .codebutton::after, .demobutton::before, .demobutton::after{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+} 
+.codebutton::before, .demobutton::before{
+  content: "";
+  background: #000;
+  width: 120%;
+  left: -10%;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+.codebutton:hover, .demobutton:hover{
+  color: #010101;
+}
+.codebutton:hover::before, .demobutton:hover::before{
+  transform: translate3d(100%, 0, 0);
+}
+.codebutton:active, .demobutton:active{
+  transform: scale(0.95);
+}
+
+/* About Me Section */
+.about-me-container {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: 10px;
+  flex-direction: column;
+  gap: 2rem;
+}
+.about-me-title {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 2.5rem;
+  color: #f5f5f5;
+  text-decoration: underline 2px #fcee0a;
+}
+.about-me-image {
+  height: 20rem;
+  width: auto;
+  border-radius: 50%;
+  border: 5px #fcee0a dotted;
 }
 
 /* Foooter Styling */
@@ -239,6 +374,18 @@ footer {
 }
 .love p:nth-child(1) i {
   color: #ff0000;
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f5f5f5;
+  gap: 1vw;
+  padding: 1vw;
+}
+.social-icons a {
+  color: #f5f5f5;
+  text-decoration: none;
 }
 .cr-text{
   user-select: all;

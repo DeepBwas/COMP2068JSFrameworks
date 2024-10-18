@@ -2,7 +2,7 @@
     <div class="container w-50 p-5 rounded contact-me-container">
         <h2 class="text-center contact-me-h2">Contact Me</h1>
         <p class="text-center contact-me-text">Have any question or query? Feel free to reach out to me.</p>
-        <form action="/contactme" method="POST">
+        <form action="/contactme">
             <div class="row mb-3">
                 <div class="col">
                     <label for="firstName" class="form-label">First Name</label>
@@ -21,7 +21,7 @@
                 <label for="message" class="form-label">Message</label>
                 <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
             </div>
-            <button type="submit" class="contact-me-btn">Submit</button>
+            <button class="contact-me-btn">Send Message <i style="font-size: 1rem;" class="fa-regular fa-paper-plane"></i></button>
         </form>
     </div>
 </div>
