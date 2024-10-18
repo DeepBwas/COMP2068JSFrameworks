@@ -23,6 +23,54 @@ switch (page) {
         break;
 }
 
+// Home JavaScript
+var animatedText = document.getElementById('homeAnimatedText');
+// Now I want to add some words in the text which will be typewriter animated. After the last word it will type Software Developer.
+var words = ['HTML', 'CSS', 'JavaScript', 'C#', 'Python', 'SQL', 'etc', 'Software Developer'];
+var i = 0;
+var j = 0;
+var isDeleting = false;
+var typeSpeed = 100;
+var deleteSpeed = 70;
+var endDelay = 250;
+var finalWordDelay = 1500;
+
+var typeWriter = () => {
+    var currentWord = words[i];
+    var currentLetter = currentWord.substring(0, j);
+    animatedText.innerHTML = currentLetter;
+
+    if (!isDeleting) {
+        if (j < currentWord.length) {
+            j++;
+            setTimeout(typeWriter, typeSpeed);
+        } else {
+            if (i === words.length - 1) {
+                animatedText.style.color = '#fcee0a';
+                setTimeout(typeWriter, finalWordDelay);
+            } else {
+                isDeleting = true;
+                setTimeout(typeWriter, endDelay);
+            }
+        }
+    } else {
+        if (j > 0) {
+            j--;
+            setTimeout(typeWriter, deleteSpeed);
+        } else {
+            isDeleting = false;
+            i++;
+            if (i >= words.length) {
+                i = words.length - 1;
+            }
+            setTimeout(typeWriter, typeSpeed);
+        }
+    }
+};
+
+typeWriter();
+
+
 // Footer JavaScript
 let goUpDiv = document.getElementById('goUpDiv');
 goUpDiv.addEventListener('click', function(){
