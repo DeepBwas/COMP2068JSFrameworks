@@ -286,6 +286,38 @@
   border-radius: 50%;
   border: 5px #fcee0a dotted;
 }
+.about-me-subtitle {
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 1.75rem;
+  color: #fcee0a;
+}
+.about-me-text {
+  text-align: center;
+  font-family: 'SF-Pro', sans-serif;
+  font-size: 1.25rem;
+  color: #f5f5f5;
+  width: 90%;
+}
+.about-contact-me {
+  background-color: #fcee0a;
+  color: #0e0e0e;
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: 0.5s;
+  border: 1px #0e0e0e solid;
+  font-size: 1.2rem;
+}
+.about-contact-me:hover {
+  background-color: #0e0e0e;
+  color: #fcee0a;
+  border: 1px #fcee0a dotted;
+}
+.about-contact-me:active {
+  transform: scale(0.95);
+}
 
 /* Foooter Styling */
 footer {
