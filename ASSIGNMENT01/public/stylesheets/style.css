@@ -1,19 +1,7 @@
 /* Custom Fonts */
 @font-face {
-  font-family: 'Rolf';
-  src: url(../fonts/Rolf-Medium.otf);
-}
-@font-face {
   font-family: 'Arida';
   src: url(../fonts/Arida-Regular.ttf);
-}
-@font-face {
-  font-family: 'Nata';
-  src: url(../fonts/Nata-Light.otf);
-}
-@font-face {
-  font-family: 'Robusto';
-  src: url(../fonts/Robusto-Black.ttf);
 }
 @font-face {
   font-family: 'SF-Pro';
@@ -195,7 +183,7 @@
 .project-link {
   text-decoration: none;
 }
-.card-body h5 {
+.card-title {
   font-family: 'SF-Pro', sans-serif;
   font-size: 1.5rem;
   color: #0e0e0e;
