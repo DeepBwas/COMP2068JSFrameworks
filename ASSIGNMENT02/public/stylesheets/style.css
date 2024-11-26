@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
+  background-color: #151515;
+}
+
+.logo img {
+  height: 5rem;
+}
+
+.login-button button {
+  padding: 10px 20px;
+  background-color: #fe0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button button:hover {
+  background-color: #0056b3;
+}
