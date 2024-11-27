@@ -1,0 +1,95 @@
+<div class="register-container">
+  <img src="images/logo.png" class="register-logo" alt="Logo" />
+  <h3 class="register-title">Create Your Account</h3>
+  <form action="/register" method="POST" class="register-form">
+    <div class="register-form-group">
+      <label for="username" class="register-form-label">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        class="register-form-input"
+        required
+      />
+    </div>
+    <div class="register-form-group">
+      <label for="email" class="register-form-label">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="register-form-input"
+        required
+      />
+    </div>
+    <div class="register-form-group">
+      <label for="password" class="register-form-label">Password</label>
+      <div class="password-container">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="register-form-input"
+          required
+        />
+        <span
+          class="password-toggle"
+          onclick="togglePasswordVisibility('password')"
+        >
+          <img
+            src="images/eye.svg"
+            alt="Toggle Password Visibility"
+            class="eye-icon"
+          />
+        </span>
+      </div>
+    </div>
+    <div class="register-form-group">
+      <label for="confirm-password" class="register-form-label">Confirm Password</label>
+      <div class="password-container">
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirm-password"
+          class="register-form-input"
+          required
+        />
+        <span
+          class="password-toggle"
+          onclick="togglePasswordVisibility('confirm-password')"
+        >
+          <img
+            src="images/eye.svg"
+            alt="Toggle Password Visibility"
+            class="eye-icon"
+          />
+        </span>
+      </div>
+    </div>
+    <button type="submit" class="register-button">Register</button>
+    <div class="social-login">
+      <button
+        class="social-login-button"
+        onclick="location.href='/auth/google'"
+      >
+        <img
+          src="images/google.svg"
+          alt="Google Login"
+          class="social-login-icon"
+        />
+      </button>
+      <button
+        class="social-login-button"
+        onclick="location.href='/auth/github'"
+      >
+        <img
+          src="images/github-light.svg"
+          alt="GitHub Login"
+          class="social-login-icon"
+        />
+      </button>
+    </div>
+  </form>
+  <h3 class="register-login-text">Already have an account?
+    <span onclick="location.href='/login'">Login now</span></h3>
+</div>

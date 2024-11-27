@@ -1,0 +1,55 @@
+<div class="login-container">
+  <img src="images/logo.png" class="login-logo" alt="Logo" class="login-logo" />
+  <h3 class="login-title">Login to Your Account</h3>
+  <form action="/login" method="POST" class="login-form">
+    <div class="login-form-group">
+      <label for="email" class="login-form-label">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="login-form-input"
+        required
+      />
+    </div>
+    <div class="login-form-group">
+      <label for="password" class="login-form-label">Password</label>
+      <div class="password-container">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="login-form-input"
+          required
+        />
+        <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+    <img src="images/eye.svg" alt="Toggle Password Visibility" class="eye-icon" />
+</span>
+      </div>
+    </div>
+    <button type="submit" class="login-button">Login</button>
+    <div class="social-login">
+      <button
+        class="social-login-button"
+        onclick="location.href='/auth/google'"
+      >
+        <img
+          src="images/google.svg"
+          alt="Google Login"
+          class="social-login-icon"
+        />
+      </button>
+      <button
+        class="social-login-button"
+        onclick="location.href='/auth/github'"
+      >
+        <img
+          src="images/github-light.svg"
+          alt="GitHub Login"
+          class="social-login-icon"
+        />
+      </button>
+    </div>
+  </form>
+  <h3 class="login-register-text">Do not have an account? <span onclick="location.href='/register'">Register now</span></h3>
+</div>
