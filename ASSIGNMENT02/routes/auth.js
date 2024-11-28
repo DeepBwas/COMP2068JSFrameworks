@@ -34,11 +34,8 @@ router.post("/register", async (req, res) => {
   console.log("Registration attempt - Request body:", req.body);
 
   const { username, email, password, confirmPassword } = req.body;
-
-  // Store form data in session for re-population on error
   req.session.formData = { username, email };
 
-  // Validate input fields
   if (!username || !email || !password || !confirmPassword) {
     console.log("Missing required fields");
     res.notify.error("All fields are required");
@@ -52,7 +49,6 @@ router.post("/register", async (req, res) => {
   }
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
     });

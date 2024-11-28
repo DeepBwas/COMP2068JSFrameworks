@@ -1,0 +1,11 @@
+<div id="notification-container"></div>
+{{#if notifications}}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    {{#each notifications}}
+      notify.{{type}}('{{message}}',
+      {{duration}});
+    {{/each}}
+    fetch('/clear-notifications', { method: 'POST' }); });
+  </script>
+{{/if}}
