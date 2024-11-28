@@ -1,13 +1,39 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var fs = require('fs');
+require('dotenv').config();
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const fs = require('fs');
+const mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('Successfully connected to MongoDB.');
+    
+    // Test the connection
+    mongoose.connection.db.admin().ping()
+      .then(() => console.log('MongoDB ping successful'))
+      .catch(err => console.error('MongoDB ping failed:', err));
+  })
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+  });
+
+// MongoDB connection event handlers
+mongoose.connection.on('error', err => {
+  console.error('MongoDB error occurred:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,11 +48,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Read the header template content
 const headerTemplate = fs.readFileSync(path.join(__dirname, 'views', 'header.hbs'), 'utf8');
 
+// Add header template to all routes
 app.use('/', (req, res, next) => {
   res.locals.header = headerTemplate;
   next();
 });
 
+// Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
