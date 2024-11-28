@@ -1,0 +1,17 @@
+<!-- views/test-notifications.hbs -->
+<div class="test-buttons">
+  <button onclick="notify.success('Success message!')">Test Success</button>
+  <button onclick="notify.error('Error occurred!')">Test Error</button>
+  <button onclick="notify.info('Information message')">Test Info</button>
+  <button onclick="notify.warning('Warning message', 8000)">Test Warning (8s)</button>
+  <button onclick="testMultipleNotifications()">Test Multiple</button>
+</div>
+
+<script>
+function testMultipleNotifications() {
+    notify.success('Operation successful!', 3000);
+    setTimeout(() => notify.error('An error occurred!', 3000), 1000);
+    setTimeout(() => notify.info('New message received', 3000), 2000);
+    setTimeout(() => notify.warning('Battery low', 3000), 3000);
+}
+</script>

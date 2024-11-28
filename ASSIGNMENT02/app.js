@@ -6,9 +6,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+
+const NotificationManager = require('./services/NotificationManager');
 
 const app = express();
 
@@ -45,6 +50,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Passport.js setup
+require('./config/passport')(passport);
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(NotificationManager.setup.bind(NotificationManager));
+
+app.locals.json = function(context) {
+  return JSON.stringify(context);
+};
+
 // Read the header template content
 const headerTemplate = fs.readFileSync(path.join(__dirname, 'views', 'header.hbs'), 'utf8');
 
@@ -57,6 +73,12 @@ app.use('/', (req, res, next) => {
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+
+// Home route
+app.get('/home', (req, res) => {
+  res.render('home');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -33,6 +33,11 @@ router.get('/register', function(req, res, next) {
   res.render('register', { title: 'Register - PicsForge' });
 });
 
+/* GET notification test page. */
+router.get('/test-notifications', (req, res) => {
+  res.render('test-notifications');
+});
+
 // Add more routes here that do not require MongoDB connection
 
 module.exports = router;
