@@ -38,5 +38,8 @@
     {{/if}}
     <li><a href="/about">About</a></li>
     <li><a href="/privacy-policy">Privacy Policy</a></li>
+    {{#if user}}
+      <li><a href="/auth/logout">Logout</a></li>
+    {{/if}}
   </ul>
 </nav>
