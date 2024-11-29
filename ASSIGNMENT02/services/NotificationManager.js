@@ -12,7 +12,16 @@ class NotificationManager {
 
   static setup(req, res, next) {
     const instance = this.getInstance();
+
     res.locals.notifications = req.session.notifications || [];
+    const oldRender = res.render;
+    res.render = function (view, options = {}) {
+      options.notifications = res.locals.notifications;
+      oldRender.call(this, view, options);
+    };
+    if (req.session.notifications) {
+      delete req.session.notifications;
+    }
 
     res.notify = {
       show: (message, type, duration = 5000) =>
@@ -34,26 +43,19 @@ class NotificationManager {
     if (!req.session.notifications) {
       req.session.notifications = [];
     }
-    const notification = { message, type, duration, id: Date.now() };
+
+    const notification = {
+      message,
+      type,
+      duration: duration || 5000,
+    };
     req.session.notifications.push(notification);
-    setTimeout(() => {
-      this.remove(req, notification.id);
-    }, duration);
-  }
 
-  remove(req, id) {
-    if (req.session.notifications) {
-      req.session.notifications = req.session.notifications.filter(
-        (n) => n.id !== id
-      );
+    if (req.session.save) {
+      req.session.save((err) => {
+        if (err) console.error("Error saving session:", err);
+      });
     }
-  }
-
-  static clearSessionNotifications(req, res, next) {
-    if (req.session) {
-      delete req.session.notifications;
-    }
-    next();
   }
 }
 

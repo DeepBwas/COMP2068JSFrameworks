@@ -57,13 +57,20 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Passport.js setup
 require("./config/passport")(passport);
-app.use(session({ secret: "secret", resave: true, saveUninitialized: true }));
+app.use(session({
+  secret: 'SESSION_SECRET',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Notification Manager setup
 app.use(NotificationManager.setup.bind(NotificationManager));
-app.use(NotificationManager.clearSessionNotifications);
 
 app.locals.json = function (context) {
   return JSON.stringify(context);
@@ -75,10 +82,15 @@ const headerTemplate = fs.readFileSync(
   "utf8"
 );
 
-// Add header template to all routes
+// Middleware to set the header template
 app.use("/", (req, res, next) => {
   res.locals.header = headerTemplate;
   next();
+});
+
+// Register hbs helper
+hbs.registerHelper('json', function(context) {
+  return JSON.stringify(context);
 });
 
 // Routes
@@ -98,7 +110,6 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
