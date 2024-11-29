@@ -6,6 +6,8 @@ const MongoClient = require("mongodb").MongoClient;
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
+const { isAuthenticated } = require("./auth");
+
 client.connect((err) => {
   if (err) {
     console.error("Failed to connect to MongoDB", err);
@@ -17,7 +19,7 @@ client.connect((err) => {
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Home - PicsForge" });
+  res.render("index", { title: "Welcome - PicsForge" });
 });
 
 /* GET login page. */
@@ -41,6 +43,16 @@ router.post("/clear-notifications", (req, res) => {
     delete req.session.notifications;
   }
   res.sendStatus(200);
+});
+
+/* GET home page. */
+router.get("/home", isAuthenticated, (req, res) => {
+  res.render("home", { title: "Home - PicsForge" });
+});
+
+/* GET profile page. */
+router.get("/profile", isAuthenticated, (req, res) => {
+  res.render("profile", { title: "Profile - PicsForge" });
 });
 
 module.exports = router;

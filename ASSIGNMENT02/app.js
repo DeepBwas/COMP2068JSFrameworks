@@ -4,7 +4,6 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const fs = require("fs");
 const hbs = require("hbs");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -72,36 +71,36 @@ app.use(passport.session());
 // Notification Manager setup
 app.use(NotificationManager.setup.bind(NotificationManager));
 
+// Add user to res.locals
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
+
+// Register Handlebars helpers
 app.locals.json = function (context) {
   return JSON.stringify(context);
 };
 
-// Read the header template content
-const headerTemplate = fs.readFileSync(
-  path.join(__dirname, "views", "header.hbs"),
-  "utf8"
-);
-
-// Middleware to set the header template
-app.use("/", (req, res, next) => {
-  res.locals.header = headerTemplate;
-  next();
-});
-
-// Register hbs helper
 hbs.registerHelper('json', function(context) {
   return JSON.stringify(context);
+});
+
+hbs.registerHelper('getInitials', function(username) {
+  if (!username) return '';
+  
+  const words = username.split(' ');
+  if (words.length === 1) {
+    return words[0].charAt(0).toUpperCase();
+  } else {
+    return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+  }
 });
 
 // Routes
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
-
-// Home route
-app.get("/home", (req, res) => {
-  res.render("home");
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

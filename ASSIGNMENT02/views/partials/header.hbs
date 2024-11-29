@@ -1,0 +1,21 @@
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <img src="/images/logo.png" alt="PicsForge Logo" />
+    </div>
+    {{#if user}}
+      <div class="header-user-section">
+        <span class="header-greeting">Hello, {{user.username}}</span>
+        <div class="header-avatar" onclick="location.href='/auth/logout'">
+          <div class="avatar" title={{user.username}}>
+            {{getInitials user.username}}
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <div class="header-login-button">
+        <button onclick="location.href='/login'">Login</button>
+      </div>
+    {{/if}}
+  </div>
+</header>

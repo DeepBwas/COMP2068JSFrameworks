@@ -154,13 +154,5 @@ router.get(
   }
 );
 
-// Protected routes
-router.get("/profile", isAuthenticated, (req, res) => {
-  res.render("profile", { user: req.user });
-});
-
-router.get("/home", isAuthenticated, (req, res) => {
-  res.render("home", { user: req.user });
-});
-
 module.exports = router;
+module.exports.isAuthenticated = isAuthenticated;
