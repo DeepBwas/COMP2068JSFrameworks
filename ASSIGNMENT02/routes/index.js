@@ -17,7 +17,7 @@ client.connect((err) => {
   const db = client.db("PicsForge_db");
 });
 
-/* GET home page. */
+/* GET index page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Welcome - PicsForge" });
 });
@@ -30,6 +30,16 @@ router.get("/login", function (req, res, next) {
 /* GET register page. */
 router.get("/register", function (req, res, next) {
   res.render("register", { title: "Register - PicsForge" });
+});
+
+/* GET about page. */
+router.get("/about", function (req, res, next) {
+  res.render("about", { title: "About - PicsForge" });
+});
+
+/* GET privacy policy page. */
+router.get("/privacy-policy", function (req, res, next) {
+  res.render("privacy-policy", { title: "Privacy Policy - PicsForge" });
 });
 
 /* GET notification test page. */
@@ -53,6 +63,11 @@ router.get("/home", isAuthenticated, (req, res) => {
 /* GET profile page. */
 router.get("/profile", isAuthenticated, (req, res) => {
   res.render("profile", { title: "Profile - PicsForge" });
+});
+
+/* GET gallery page. */
+router.get("/gallery", isAuthenticated, (req, res) => {
+  res.render("gallery", { title: "Gallery - PicsForge" });
 });
 
 module.exports = router;

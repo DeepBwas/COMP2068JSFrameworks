@@ -10,7 +10,6 @@
         name="username"
         class="register-form-input"
         autocomplete="username"
-        required
       />
     </div>
     <div class="register-form-group">
@@ -21,7 +20,6 @@
         name="email"
         class="register-form-input"
         autocomplete="email"
-        required
       />
     </div>
     <div class="register-form-group">
@@ -33,7 +31,6 @@
           name="password"
           class="register-form-input"
           autocomplete="new-password"
-          required
         />
         <span
           class="password-toggle"
@@ -56,7 +53,6 @@
           name="confirmPassword"
           class="register-form-input"
           autocomplete="new-password"
-          required
         />
         <span
           class="password-toggle"
@@ -71,7 +67,8 @@
       </div>
     </div>
     <button type="submit" class="register-button">Register</button>
-    <div class="social-login">
+  </form>
+  <div class="social-login">
       <button
         class="social-login-button"
         onclick="location.href='/auth/google'"
@@ -93,7 +90,6 @@
         />
       </button>
     </div>
-  </form>
   <h3 class="register-login-text">Already have an account?
     <span onclick="location.href='/login'">Login now</span></h3>
 </div>

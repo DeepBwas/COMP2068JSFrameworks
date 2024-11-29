@@ -31,19 +31,15 @@ router.get("/register", (req, res) => {
 
 // POST register
 router.post("/register", async (req, res) => {
-  console.log("Registration attempt - Request body:", req.body);
-
   const { username, email, password, confirmPassword } = req.body;
   req.session.formData = { username, email };
 
   if (!username || !email || !password || !confirmPassword) {
-    console.log("Missing required fields");
     res.notify.error("All fields are required");
     return res.redirect("/register");
   }
 
   if (password !== confirmPassword) {
-    console.log("Password mismatch");
     res.notify.error("Passwords do not match");
     return res.redirect("/register");
   }
@@ -54,7 +50,6 @@ router.post("/register", async (req, res) => {
     });
 
     if (existingUser) {
-      console.log("User already exists");
       res.notify.error("Email or username already exists");
       return res.redirect("/register");
     }
@@ -62,7 +57,6 @@ router.post("/register", async (req, res) => {
     const user = new User({ username, email, password });
     await user.save();
 
-    console.log("User registered successfully:", user);
     res.notify.success("Account created successfully! Please login.");
     res.redirect("/login");
   } catch (err) {
@@ -95,7 +89,7 @@ router.post("/login", (req, res, next) => {
         res.notify.error("Login error occurred");
         return next(err);
       }
-      res.notify.success("Welcome back!");
+      res.notify.success("Successfully logged in");
       return res.redirect("/home");
     });
   })(req, res, next);

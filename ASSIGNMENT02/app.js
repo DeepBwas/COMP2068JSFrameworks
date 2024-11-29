@@ -12,6 +12,7 @@ const session = require("express-session");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 
 const NotificationManager = require("./services/NotificationManager");
 
@@ -21,13 +22,11 @@ const app = express();
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log("Successfully connected to MongoDB.");
-
     // Test the connection
     mongoose.connection.db
       .admin()
       .ping()
-      .then(() => console.log("MongoDB ping successful"))
+      .then(() => console.log("MongoDB ping successful!"))
       .catch((err) => console.error("MongoDB ping failed:", err));
   })
   .catch((err) => {
@@ -56,15 +55,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Passport.js setup
 require("./config/passport")(passport);
-app.use(session({
-  secret: 'SESSION_SECRET',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
+app.use(
+  session({
+    secret: "SESSION_SECRET",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -82,14 +83,14 @@ app.locals.json = function (context) {
   return JSON.stringify(context);
 };
 
-hbs.registerHelper('json', function(context) {
+hbs.registerHelper("json", function (context) {
   return JSON.stringify(context);
 });
 
-hbs.registerHelper('getInitials', function(username) {
-  if (!username) return '';
-  
-  const words = username.split(' ');
+hbs.registerHelper("getInitials", function (username) {
+  if (!username) return "";
+
+  const words = username.split(" ");
   if (words.length === 1) {
     return words[0].charAt(0).toUpperCase();
   } else {
@@ -101,6 +102,7 @@ hbs.registerHelper('getInitials', function(username) {
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
+app.use("/", profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,12 +1,21 @@
 <header>
   <div class="header-container">
-    <div class="logo">
-      <img src="/images/logo.png" alt="PicsForge Logo" />
+    <div class="header-left">
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="logo">
+        <a href="{{#if user}}/home{{else}}/{{/if}}">
+          <img src="/images/logo.png" alt="PicsForge Logo" />
+        </a>
+      </div>
     </div>
     {{#if user}}
       <div class="header-user-section">
         <span class="header-greeting">Hello, {{user.username}}</span>
-        <div class="header-avatar" onclick="location.href='/auth/logout'">
+        <div class="header-avatar" onclick="location.href='/profile'">
           <div class="avatar" title={{user.username}}>
             {{getInitials user.username}}
           </div>
@@ -19,3 +28,15 @@
     {{/if}}
   </div>
 </header>
+
+<nav class="side-nav" id="sideNav">
+  <ul>
+    <li><a href="{{#if user}}/home{{else}}/{{/if}}">Home</a></li>
+    {{#if user}}
+      <li><a href="/gallery">Gallery</a></li>
+      <li><a href="/profile">Profile</a></li>
+    {{/if}}
+    <li><a href="/about">About</a></li>
+    <li><a href="/privacy-policy">Privacy Policy</a></li>
+  </ul>
+</nav>

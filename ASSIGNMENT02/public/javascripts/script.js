@@ -1,3 +1,26 @@
+// Side nav toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const sideNav = document.getElementById("sideNav");
+
+  hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    sideNav.classList.toggle("active");
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      !hamburger.contains(e.target) &&
+      !sideNav.contains(e.target) &&
+      sideNav.classList.contains("active")
+    ) {
+      hamburger.classList.remove("active");
+      sideNav.classList.remove("active");
+    }
+  });
+});
+
 // Password visibility toggle
 function togglePasswordVisibility(fieldId) {
   const passwordField = document.getElementById(fieldId);

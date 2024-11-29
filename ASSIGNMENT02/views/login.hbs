@@ -10,7 +10,6 @@
         name="email"
         class="login-form-input"
         autocomplete="email"
-        required
       />
     </div>
     <div class="login-form-group">
@@ -22,7 +21,6 @@
           name="password"
           class="login-form-input"
           autocomplete="current-password"
-          required
         />
         <span class="password-toggle" onclick="togglePasswordVisibility('password')">
           <img src="images/eye.svg" alt="Toggle Password Visibility" class="eye-icon" />
@@ -30,7 +28,8 @@
       </div>
     </div>
     <button type="submit" class="login-button">Login</button>
-    <div class="social-login">
+  </form>
+  <div class="social-login">
       <button
         class="social-login-button"
         onclick="location.href='/auth/google'"
@@ -52,6 +51,5 @@
         />
       </button>
     </div>
-  </form>
   <h3 class="login-register-text">Do not have an account? <span onclick="location.href='/register'">Register now</span></h3>
 </div>
