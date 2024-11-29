@@ -75,6 +75,11 @@ router.get("/login", (req, res) => {
 
 // POST login
 router.post("/login", (req, res, next) => {
+  if (!req.body.email || !req.body.password) {
+    res.notify.error("Email and password are required");
+    return res.redirect("/login");
+  }
+
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       res.notify.error("Login error occurred");
