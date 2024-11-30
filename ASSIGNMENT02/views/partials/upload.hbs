@@ -1,0 +1,47 @@
+{{! views/partials/upload.hbs }}
+<div class="upload-overlay"></div>
+<div class="upload-container" id="{{uploadId}}">
+  <div class="upload-header">
+    <div class="upload-close-btn" onclick="hideUpload('{{uploadId}}')">
+      <span class="material-icons">close</span>
+    </div>
+    <p class="upload-title">{{title}}</p>
+    <p class="upload-subtitle">{{subtitle}}</p>
+  </div>
+
+  <form
+    class="upload-form"
+    action="{{action}}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <div
+      class="upload-area"
+      onclick="document.getElementById('{{fileInputId}}').click()"
+    >
+      <div class="upload-content">
+        <span class="material-icons">cloud_upload</span>
+        <p class="upload-specs-mute">Drag and drop or click to upload</p>
+        <p class="upload-specs">Only JPG, JPEG and PNG files allowed</p>
+      </div>
+    </div>
+    <input
+      type="file"
+      id="{{fileInputId}}"
+      name="{{fieldName}}"
+      accept=".jpg,.jpeg,.png"
+      style="display: none;"
+      onchange="handleFileSelect(this)"
+    />
+    <div class="preview-area" style="display: none;">
+      <img id="preview-{{uploadId}}" src="" alt="Preview" />
+    </div>
+    <div class="upload-delete-btn" style="display: none;">
+      <span
+        onclick="resetUploadArea('{{uploadId}}')"
+        class="material-icons upload-delete-icon"
+      >delete</span>
+    </div>
+    <button type="submit" class="upload-btn">Upload</button>
+  </form>
+</div>

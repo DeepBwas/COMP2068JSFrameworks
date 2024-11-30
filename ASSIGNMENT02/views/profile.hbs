@@ -1,4 +1,12 @@
 <div class="profile-page">
+  {{> upload 
+  uploadId="avatar-upload"
+  fileInputId="avatar-input"
+  fieldName="avatar"
+  title="Upload Avatar"
+  subtitle="Choose a profile picture"
+  action="/profile/avatar/upload"
+}}
   <div class="profile-sidebar">
     <div class="tab-list">
       <button class="tab-btn active" data-tab="general">General</button>
@@ -13,12 +21,12 @@
 
       <div class="profile-avatar-section">
         <div class="header-avatar">
-          <div class="avatar" title={{user.username}}>
-            {{getInitials user.username}}
-            <div class="avatar-overlay">
-              <span class="material-icons">edit</span>
-            </div>
+          <div class="avatar" data-upload-trigger="avatar-upload" title={{user.username}}>
+          {{getInitials user.username}}
+          <div class="avatar-overlay">
+            <span class="material-icons">edit</span>
           </div>
+        </div>
         </div>
         <span class="profile-username">{{user.username}}</span>
       </div>

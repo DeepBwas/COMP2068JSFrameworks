@@ -167,7 +167,7 @@ body {
   color: #f5f5f5;
   text-decoration: none;
   font-size: 1.2rem;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .side-nav ul li a:hover {
@@ -420,7 +420,7 @@ body {
   font-family: "SF-Pro", sans-serif;
   position: relative;
   min-width: 18em;
-  max-width: 36em;
+  max-width: 75vw;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: translateY(-20px);
@@ -507,7 +507,7 @@ body {
 }
 
 .tab-btn {
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   padding: 1rem 2rem;
   text-align: left;
   border: none;
@@ -648,10 +648,219 @@ body {
 .avatar-overlay .material-icons {
   color: white;
   font-size: 2rem;
+  user-select: none;
   opacity: 0.9;
 }
 
 .avatar-overlay:hover .material-icons {
   transform: scale(1.1);
   transition: transform 0.2s ease;
+}
+
+/* Upload Box */
+.upload-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: rgb(21, 21, 21);
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  flex-direction: column;
+  user-select: none;
+}
+
+.upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.upload-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.upload-title {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #f5f5f5;
+  font-family: "SF-Pro", sans-serif;
+  text-align: center;
+}
+
+.upload-subtitle {
+  color: #666;
+  margin: 5px 0 0;
+  color: #f5f5f5;
+  font-family: "SF-Pro", sans-serif;
+}
+
+.upload-area {
+  padding: 40px 20px;
+  background: rgb(21, 21, 21);
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #fe0000;
+  min-height: 300px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.drag-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.drag-content {
+  text-align: center;
+  color: #fe0000;
+}
+
+.drag-content .material-icons {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.drag-content p {
+  font-size: 1.2rem;
+  margin: 0;
+  font-family: "SF-Pro", sans-serif;
+}
+
+.upload-area.has-preview {
+  padding: 0;
+  margin-bottom: 4.5rem;
+}
+
+.upload-area.has-preview .preview-image {
+  width: 100%;  
+  height: 100%;
+  object-fit: contain;
+  max-height: fit-content;
+}
+
+.upload-area .upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.3s ease;
+}
+
+.upload-area.has-preview .upload-content {
+  display: none;
+}
+
+.upload-area:hover {
+  background: black;
+}
+
+.upload-area .material-icons {
+  font-size: 48px;
+  color: #fe0000;
+}
+
+.upload-specs {
+  color: #f5f5f5;
+  font-size: 1rem;
+  font-family: "SF-Pro", sans-serif;
+  margin: 0;
+}
+
+.upload-specs-mute {
+  font-family: "SF-Pro", sans-serif;
+  color: #666666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.preview-area {
+  margin-top: 20px;
+}
+
+.preview-area img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 4px;
+}
+
+.upload-delete-icon {
+  position: absolute;
+  bottom: 5%;
+  left: 60%;
+  transform: translateX(-60%);
+  background: #fe0000;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  color: #f5f5f5;
+  cursor: pointer;
+  padding: 8px 20px;
+}
+
+.upload-delete-icon:hover {
+  background: #aa0000;
+}
+
+.upload-btn {
+  position: absolute;
+  bottom: 5%;
+  left: 40%;
+  transform: translateX(-40%);
+  padding: 8px 20px;
+  font-family: 'SF-Pro', sans-serif;
+  background: #fe0000;
+  color: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: none;
+}
+
+.upload-btn:hover {
+  background: #aa0000;
+}
+
+.upload-close-btn {
+  position: absolute;
+  right: 0.3em;
+  top: 0.3em;
+  font-size: 2em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #f5f5f5;
+}
+
+.upload-close-btn:hover {
+  color: #cc0000;
 }
