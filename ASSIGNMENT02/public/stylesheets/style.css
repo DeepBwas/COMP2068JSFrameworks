@@ -172,7 +172,7 @@ body {
 
 .side-nav ul li a:hover {
   color: #dbdbdb;
-  text-decoration: underline;
+  text-decoration: 3px underline;
   text-decoration-color: #fe0000;
 }
 
@@ -305,7 +305,7 @@ body {
 
 .login-register-text span {
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: 3px underline;
   text-decoration-color: #fe0000;
 }
 
@@ -393,7 +393,7 @@ body {
 
 .register-login-text span {
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: 3px underline;
   text-decoration-color: #fe0000;
 }
 .register-login-text span:hover {
@@ -487,49 +487,171 @@ body {
 
 /* Profile Page */
 
-.profile-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.profile-form {
+.profile-page {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  min-height: 100vh;
+  background: #f5f5f5;
 }
 
-.form-group {
+.profile-sidebar {
+  width: 250px;
+  background: #202020;
+  border-right: 1px solid #dddddd;
+  padding: 2rem 0;
+}
+
+.tab-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
+.tab-btn {
+  font-family: 'SF-Pro', sans-serif;
+  padding: 1rem 2rem;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.tab-btn.active {
+  background: #f5f5f5;
+  color: #0e0e0e;
+  border-left: 4px solid #ff0000;
+}
+
+.profile-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.tab-content {
+  display: none;
+  max-width: 600px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.settings-form {
+  margin-top: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
 .form-group label {
-  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .form-group input,
 .form-group textarea {
-  padding: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.update-btn,
-.delete-btn,
-.logout-btn {
-  padding: 0.75rem;
+.update-btn {
   background: #007bff;
   color: white;
   border: none;
+  padding: 0.75rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .update-btn:hover {
   background: #0056b3;
+}
+
+.logout-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+.profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.profile-avatar-section .avatar {
+  width: 80px;
+  height: 80px;
+  background-color: #fe0000;
+  color: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2rem;
+  transition: background-color 0.3s ease;
+  font-family: "SF-Pro", sans-serif;
+  font-weight: bold;
+}
+
+.profile-username {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.avatar {
+  position: relative;
+  cursor: pointer;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-overlay i {
+  color: white;
+  font-size: 16px;
+}
+
+.avatar-overlay .material-icons {
+  color: white;
+  font-size: 2rem;
+  opacity: 0.9;
+}
+
+.avatar-overlay:hover .material-icons {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
 }
