@@ -183,6 +183,7 @@ function resetUploadArea(uploadId) {
   
   // Get the elements
   const uploadArea = container.querySelector('.upload-area');
+  const deleteBtn = container.querySelector('.upload-delete-btn');
   const uploadBtn = container.querySelector('.upload-btn');
   const fileInput = container.querySelector('input[type="file"]');
   
@@ -204,7 +205,6 @@ function resetUploadArea(uploadId) {
   }
 
   // Hide delete button
-  const deleteBtn = container.querySelector('.upload-delete-btn');
   if (deleteBtn) {
     deleteBtn.style.display = 'none';
   }
