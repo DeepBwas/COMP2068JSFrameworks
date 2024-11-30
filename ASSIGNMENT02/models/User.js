@@ -30,7 +30,9 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  avatarKey: String,  // S3 key for the avatar
+  avatarUrl: String   // Full S3 URL for the avatar
 });
 
 // Pre-save middleware to hash password

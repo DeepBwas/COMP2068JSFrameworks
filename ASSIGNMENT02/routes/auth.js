@@ -1,16 +1,34 @@
-// routes/auth.js
 const express = require("express");
 const passport = require("passport");
 const User = require("../models/User");
+const UploadManager = require('../services/UploadManager');
 const router = express.Router();
 
-// Authentication middleware
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
+// Initialize avatar manager
+const avatarManager = new UploadManager({
+  bucketName: process.env.AWS_BUCKET_NAME,
+  region: process.env.AWS_REGION
+});
+
+// Authentication middleware with avatar refresh
+const isAuthenticated = async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    res.notify.error("Please login to access this page");
+    return res.redirect("/login");
   }
-  res.notify.error("Please login to access this page");
-  res.redirect("/login");
+
+  // Refresh avatar URL if exists
+  if (req.user && req.user.avatarKey) {
+    try {
+      const user = await User.findById(req.user.id);
+      user.avatarUrl = await avatarManager.getSignedUrl(user.avatarKey);
+      await user.save();
+      req.user = user;
+    } catch (error) {
+      console.error('Error refreshing avatar URL:', error);
+    }
+  }
+  next();
 };
 
 // GET register page

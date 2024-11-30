@@ -17,7 +17,11 @@
         <span class="header-greeting">Hello, {{user.username}}</span>
         <div class="header-avatar" onclick="location.href='/profile'">
           <div class="avatar" title={{user.username}}>
-            {{getInitials user.username}}
+            {{#if user.avatarUrl}}
+              <img src="{{user.avatarUrl}}" alt="{{user.username}}'s avatar" class="avatar-image">
+            {{else}}
+              {{getInitials user.username}}
+            {{/if}}
           </div>
         </div>
       </div>

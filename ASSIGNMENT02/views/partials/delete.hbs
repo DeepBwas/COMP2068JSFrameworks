@@ -1,0 +1,17 @@
+{{!-- views/partials/delete.hbs --}}
+<div class="delete-overlay"></div>
+<div class="delete-modal" id="{{modalId}}">
+  <div class="delete-modal-content">
+    <div class="delete-modal-header">
+      <h3>{{title}}</h3>
+      <span class="delete-close-btn material-icons" onclick="hideDeleteModal('{{modalId}}')">close</span>
+    </div>
+    <div class="delete-modal-body">
+      <p>{{message}}</p>
+    </div>
+    <div class="delete-modal-footer">
+      <button class="delete-cancel-btn" onclick="hideDeleteModal('{{modalId}}')">Cancel</button>
+      <button class="delete-confirm-btn" onclick="{{onConfirm}}">Delete</button>
+    </div>
+  </div>
+</div>

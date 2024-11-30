@@ -2,9 +2,18 @@
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const sideNav = document.getElementById("sideNav");
-  const uploadAreas = document.querySelectorAll('.upload-area');
+  const uploadAreas = document.querySelectorAll(".upload-area");
   const tabs = document.querySelectorAll(".tab-btn");
   const contents = document.querySelectorAll(".tab-content");
+  const storedNotification = sessionStorage.getItem('notification');
+
+
+  // Show stored notification
+  if (storedNotification) {
+    const { message, type } = JSON.parse(storedNotification);
+    notify[type](message);
+    sessionStorage.removeItem('notification');
+  }
 
   // Hamburger menu
   hamburger.addEventListener("click", () => {
@@ -45,40 +54,44 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Document-level drag events
-  document.addEventListener('dragenter', preventDefaults);
-  
-  document.addEventListener('dragleave', (e) => {
+  document.addEventListener("dragenter", preventDefaults);
+
+  document.addEventListener("dragleave", (e) => {
     preventDefaults(e);
-    
+
     // Check if we're actually leaving the document
-    if (e.clientX <= 0 || e.clientX >= window.innerWidth || 
-        e.clientY <= 0 || e.clientY >= window.innerHeight) {
+    if (
+      e.clientX <= 0 ||
+      e.clientX >= window.innerWidth ||
+      e.clientY <= 0 ||
+      e.clientY >= window.innerHeight
+    ) {
       removeAllOverlays();
     }
   });
-  
+
   // Upload area drag and drop
-  uploadAreas.forEach(area => {
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  uploadAreas.forEach((area) => {
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
       area.addEventListener(eventName, preventDefaults);
     });
 
-    ['dragenter', 'dragover'].forEach(eventName => {
+    ["dragenter", "dragover"].forEach((eventName) => {
       area.addEventListener(eventName, highlight);
     });
 
-    ['dragleave', 'drop'].forEach(eventName => {
+    ["dragleave", "drop"].forEach((eventName) => {
       area.addEventListener(eventName, unhighlight);
     });
 
-    area.addEventListener('drop', handleDrop);
+    area.addEventListener("drop", handleDrop);
   });
 });
 
 // Track drag state globally
 let dragCounter = 0;
 let currentDropTarget = null;
-let isProcessingDrag = false; 
+let isProcessingDrag = false;
 
 // Drag and Drop handlers
 function preventDefaults(e) {
@@ -88,25 +101,25 @@ function preventDefaults(e) {
 
 function highlight(e) {
   preventDefaults(e);
-  
-  if (isProcessingDrag) return;  // Skip if we're already processing
-  
+
+  if (isProcessingDrag) return; // Skip if we're already processing
+
   const uploadArea = e.currentTarget;
-  
+
   // Only handle if this is a new drag target or no current target
   if (!currentDropTarget || currentDropTarget !== uploadArea) {
     isProcessingDrag = true;
-    
+
     // Clean up any existing overlays first
     removeAllOverlays();
-    
+
     currentDropTarget = uploadArea;
     dragCounter = 1;
-    
-    uploadArea.classList.add('drag-active');
-    
-    const overlay = document.createElement('div');
-    overlay.className = 'drag-overlay';
+
+    uploadArea.classList.add("drag-active");
+
+    const overlay = document.createElement("div");
+    overlay.className = "drag-overlay";
     overlay.innerHTML = `
       <div class="drag-content">
         <span class="material-icons">file_upload</span>
@@ -114,7 +127,7 @@ function highlight(e) {
       </div>
     `;
     uploadArea.appendChild(overlay);
-    
+
     // Reset processing flag after a short delay
     setTimeout(() => {
       isProcessingDrag = false;
@@ -124,17 +137,17 @@ function highlight(e) {
 
 function unhighlight(e) {
   preventDefaults(e);
-  
-  if (isProcessingDrag) return;  // Skip if we're already processing
-  
+
+  if (isProcessingDrag) return; // Skip if we're already processing
+
   const uploadArea = e.currentTarget;
   const relatedTarget = e.relatedTarget;
-  
+
   // Check if we're actually leaving the upload area
   if (relatedTarget && uploadArea.contains(relatedTarget)) {
-    return;  // Skip if moving to a child element
+    return; // Skip if moving to a child element
   }
-  
+
   // Only unhighlight if this is our current drop target
   if (currentDropTarget === uploadArea) {
     isProcessingDrag = true;
@@ -149,27 +162,29 @@ function removeAllOverlays() {
   // Reset state
   dragCounter = 0;
   currentDropTarget = null;
-  
+
   // Remove all active states and overlays
-  document.querySelectorAll('.drag-active').forEach(element => {
-    element.classList.remove('drag-active');
+  document.querySelectorAll(".drag-active").forEach((element) => {
+    element.classList.remove("drag-active");
   });
-  
-  document.querySelectorAll('.drag-overlay').forEach(overlay => {
+
+  document.querySelectorAll(".drag-overlay").forEach((overlay) => {
     overlay.remove();
   });
 }
 
 function handleDrop(e) {
   preventDefaults(e);
-  
+
   const uploadArea = e.currentTarget;
   removeAllOverlays();
-  
+
   const dt = e.dataTransfer;
   const files = dt.files;
-  const input = uploadArea.closest('.upload-form').querySelector('input[type="file"]');
-  
+  const input = uploadArea
+    .closest(".upload-form")
+    .querySelector('input[type="file"]');
+
   if (files.length > 0) {
     input.files = files;
     handleFileSelect(input);
@@ -180,13 +195,13 @@ function handleDrop(e) {
 function resetUploadArea(uploadId) {
   const container = document.getElementById(uploadId);
   if (!container) return;
-  
+
   // Get the elements
-  const uploadArea = container.querySelector('.upload-area');
-  const deleteBtn = container.querySelector('.upload-delete-btn');
-  const uploadBtn = container.querySelector('.upload-btn');
+  const uploadArea = container.querySelector(".upload-area");
+  const deleteBtn = container.querySelector(".upload-delete-btn");
+  const uploadBtn = container.querySelector(".upload-btn");
   const fileInput = container.querySelector('input[type="file"]');
-  
+
   // Clear the upload area and restore initial content
   uploadArea.innerHTML = `
     <div class="upload-content">
@@ -195,30 +210,32 @@ function resetUploadArea(uploadId) {
       <p class="upload-specs">Only JPG, JPEG and PNG files allowed</p>
     </div>
   `;
-  
+
   // Remove preview class
-  uploadArea.classList.remove('has-preview');
-  
+  uploadArea.classList.remove("has-preview");
+
   // Hide upload button
   if (uploadBtn) {
-    uploadBtn.style.display = 'none';
+    uploadBtn.style.display = "none";
   }
 
   // Hide delete button
   if (deleteBtn) {
-    deleteBtn.style.display = 'none';
+    deleteBtn.style.display = "none";
   }
-  
+
   // Clear file input
   if (fileInput) {
-    fileInput.value = '';
+    fileInput.value = "";
   }
 }
 
 // Password visibility toggle
 function togglePasswordVisibility(fieldId) {
   const passwordField = document.getElementById(fieldId);
-  const eyeIcon = passwordField.parentElement.querySelector(".password-toggle img");
+  const eyeIcon = passwordField.parentElement.querySelector(
+    ".password-toggle img"
+  );
 
   if (passwordField.type === "password") {
     passwordField.type = "text";
@@ -249,7 +266,9 @@ class NotificationManager {
   }
 
   static _showNotification(message, type, duration) {
-    const container = document.getElementById("notification-container") || this.createContainer();
+    const container =
+      document.getElementById("notification-container") ||
+      this.createContainer();
     const notification = document.createElement("div");
     notification.className = `notification ${type}`;
     notification.innerHTML = `
@@ -324,14 +343,14 @@ function handleFileSelect(input) {
     img.className = "preview-image";
 
     img.onload = function () {
-      uploadArea.innerHTML = '';
+      uploadArea.innerHTML = "";
       uploadArea.appendChild(img);
-      uploadArea.classList.add('has-preview');
-      
-      const uploadBtn = uploadContainer.querySelector('.upload-btn');
-      const deleteBtn = uploadContainer.querySelector('.upload-delete-btn');
-      uploadBtn.style.display = 'block';
-      deleteBtn.style.display = 'block';
+      uploadArea.classList.add("has-preview");
+
+      const uploadBtn = uploadContainer.querySelector(".upload-btn");
+      const deleteBtn = uploadContainer.querySelector(".upload-delete-btn");
+      uploadBtn.style.display = "block";
+      deleteBtn.style.display = "block";
     };
   };
 
@@ -368,15 +387,75 @@ function hideUpload(uploadId) {
   container.style.display = "none";
   container.style.opacity = "0";
   container.style.visibility = "hidden";
-  
-  // Reset the upload area when hiding
+
   resetUploadArea(uploadId);
 }
 
+function showDeleteModal(modalId) {
+  const overlay = document.querySelector(".delete-overlay");
+  const modal = document.getElementById(modalId);
+
+  if (!modal) return;
+
+  overlay.style.display = "block";
+  modal.style.display = "block";
+  setTimeout(() => {
+    modal.style.opacity = "1";
+    modal.style.visibility = "visible";
+  }, 10);
+}
+
+function hideDeleteModal(modalId) {
+  const overlay = document.querySelector(".delete-overlay");
+  const modal = document.getElementById(modalId);
+
+  if (!modal) return;
+
+  overlay.style.display = "none";
+  modal.style.opacity = "0";
+  modal.style.visibility = "hidden";
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 300);
+}
+
+// Avatar removal
+function removeAvatar() {
+  fetch("/profile/avatar/remove", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Store notification data in sessionStorage
+        sessionStorage.setItem('notification', JSON.stringify({
+          message: data.message,
+          type: 'success'
+        }));
+        
+        // Hide the modal
+        hideDeleteModal("delete-avatar-modal");
+        
+        // Reload the page
+        location.reload();
+      } else {
+        notify.error(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      notify.error("Error removing avatar");
+    });
+}
 // Escape key handler
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
-    const visibleContainer = document.querySelector('.upload-container[style*="display: block"]');
+    const visibleContainer = document.querySelector(
+      '.upload-container[style*="display: block"]'
+    );
     if (visibleContainer) {
       hideUpload(visibleContainer.id);
     }

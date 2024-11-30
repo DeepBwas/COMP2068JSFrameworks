@@ -157,6 +157,7 @@ body {
   background-color: #fe0000;
   color: #f5f5f5;
   border-radius: 50%;
+  border: 1px solid #fe0000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,6 +166,14 @@ body {
   transition: background-color 0.3s ease;
   font-family: "SF-Pro", sans-serif;
   font-weight: bold;
+  overflow: hidden;
+  position: relative; 
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .avatar:hover {
@@ -604,17 +613,7 @@ body {
 .profile-avatar-section .avatar {
   width: 80px;
   height: 80px;
-  background-color: #fe0000;
-  color: #f5f5f5;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
   font-size: 2rem;
-  transition: background-color 0.3s ease;
-  font-family: "SF-Pro", sans-serif;
-  font-weight: bold;
 }
 
 .profile-username {
@@ -641,6 +640,7 @@ body {
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
 .avatar:hover .avatar-overlay {
@@ -662,6 +662,28 @@ body {
 .avatar-overlay:hover .material-icons {
   transform: scale(1.1);
   transition: transform 0.2s ease;
+}
+
+.remove-avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'SF-Pro', sans-serif;
+  margin-top: 1rem;
+}
+
+.remove-avatar-btn:hover {
+  background-color: #c82333;
+}
+
+.remove-avatar-btn .material-icons {
+  font-size: 1.2rem;
 }
 
 /* Upload Box */
@@ -870,4 +892,97 @@ body {
 
 .upload-close-btn:hover {
   color: #cc0000;
+}
+
+/* Delete box */
+.delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #151515;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 90%;
+  max-width: 400px;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.delete-modal-content {
+  padding: 20px;
+}
+
+.delete-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.delete-modal-header h3 {
+  margin: 0;
+  color: #f5f5f5;
+  font-family: 'SF-Pro', sans-serif;
+}
+
+.delete-close-btn {
+  cursor: pointer;
+  color: #f5f5f5;
+}
+
+.delete-close-btn:hover {
+  color: #fe0000;
+}
+
+.delete-modal-body {
+  margin-bottom: 20px;
+  color: #f5f5f5;
+  font-family: 'SF-Pro', sans-serif;
+}
+
+.delete-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.delete-cancel-btn, 
+.delete-confirm-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-family: 'SF-Pro', sans-serif;
+}
+
+.delete-cancel-btn {
+  background: #666;
+  color: #f5f5f5;
+}
+
+.delete-confirm-btn {
+  background: #fe0000;
+  color: #f5f5f5;
+}
+
+.delete-cancel-btn:hover {
+  background: #555;
+}
+
+.delete-confirm-btn:hover {
+  background: #aa0000;
 }
