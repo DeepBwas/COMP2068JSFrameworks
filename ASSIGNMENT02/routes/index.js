@@ -60,14 +60,4 @@ router.get("/home", isAuthenticated, (req, res) => {
   res.render("home", { title: "Home - PicsForge" });
 });
 
-/* GET profile page. */
-router.get("/profile", isAuthenticated, (req, res) => {
-  res.render("profile", { title: "Profile - PicsForge" });
-});
-
-/* GET gallery page. */
-router.get("/gallery", isAuthenticated, (req, res) => {
-  res.render("gallery", { title: "Gallery - PicsForge" });
-});
-
 module.exports = router;

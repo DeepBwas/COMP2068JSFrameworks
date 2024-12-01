@@ -35,6 +35,12 @@ const userSchema = new mongoose.Schema({
   avatarUrl: String   // Full S3 URL for the avatar
 });
 
+userSchema.virtual('galleryImages', {
+  ref: 'GalleryImage',
+  localField: '_id',
+  foreignField: 'userId'
+});
+
 // Pre-save middleware to hash password
 userSchema.pre('save', async function(next) {
   try {
@@ -48,6 +54,9 @@ userSchema.pre('save', async function(next) {
     next(error);
   }
 });
+
+userSchema.set('toJSON', { virtuals: true });
+userSchema.set('toObject', { virtuals: true });
 
 // Create model only if it doesn't exist
 module.exports = mongoose.models.User || mongoose.model('User', userSchema);

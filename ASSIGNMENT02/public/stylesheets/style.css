@@ -9,6 +9,7 @@
 
 body {
   margin: 0;
+  margin-bottom: 5rem;
   padding: 0;
   overflow-y: scroll;
 }
@@ -913,6 +914,7 @@ body {
   transform: translate(-50%, -50%);
   background: #151515;
   border-radius: 8px;
+  border: 1px solid #202020;
   z-index: 1000;
   width: 90%;
   max-width: 400px;
@@ -940,6 +942,10 @@ body {
 }
 
 .delete-close-btn {
+  background: none;
+  position: absolute;
+  top: 0.3em;
+  right: 0.3em;
   cursor: pointer;
   color: #f5f5f5;
 }
@@ -985,4 +991,241 @@ body {
 
 .delete-confirm-btn:hover {
   background: #aa0000;
+}
+
+/* Gallery Page */
+.gallery-content {
+  width: 100%;
+  max-width: 80vw;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  overflow: hidden;
+  align-items: flex-start;
+}
+
+.gallery-header {
+  width: 80vw;
+  max-width: 80vw;
+  margin: 2rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gallery-title {
+  font-family: "SF-Pro", sans-serif;
+  color: #202020;
+  margin: 0;
+}
+
+.gallery-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+  width: 100%; 
+  min-width: 0;
+}
+
+.gallery-grid.gallery-grid-preview {
+  min-width: 0;
+  transition: all 0.3s ease;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: #202020;
+  border: 1px solid #dddddd;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item-active {
+  border: 3px solid #fe0000;
+}
+
+.gallery-item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-item-overlay {
+  opacity: 1;
+}
+
+.gallery-preview {
+  position: sticky;
+  top: 2rem;
+  display: none;
+  width: 40%;
+  height: auto;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gallery-preview-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.gallery-preview-close .material-icons {
+  color: white;
+  font-size: 20px;
+}
+
+.gallery-preview-close:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.gallery-preview-active {
+  display: block;
+}
+
+.gallery-preview-content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.gallery-preview-image {
+  width: 100%;
+  height: auto;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.gallery-expand-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #f5f5f5;
+}
+
+.gallery-expand-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.gallery-upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #fe0000;
+  color: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "SF-Pro", sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.gallery-upload-btn:hover {
+  background-color: #aa0000;
+}
+
+.gallery-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: sticky;
+  top: 2rem;
+  margin-top: 1rem;
+}
+
+.gallery-action-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #fe0000;
+  color: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "SF-Pro", sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.gallery-action-buttons button:hover {
+  background-color: #aa0000;
+}
+
+.gallery-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 8px;
+  width: 100%;
+  min-height: 40vh;
+  border: 1px solid #dddddd;
+}
+
+.gallery-empty-icon {
+  font-size: 3rem !important;
+  margin-bottom: 1rem;
+  color: #fe0000;
+}
+
+.gallery-empty-title {
+  font-family: "SF-Pro", sans-serif;
+  color: #202020;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-empty-text {
+  font-family: "SF-Pro", sans-serif;
+  color: #666666;
+  margin-bottom: 2rem;
+}
+
+.gallery-preview-loading {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-preview-loading .gallery-preview-image {
+  opacity: 0;
 }

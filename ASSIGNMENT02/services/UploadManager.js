@@ -11,9 +11,10 @@ class UploadManager {
     this.config = {
       allowedMimes: ['image/jpeg', 'image/png'],
       maxSize: 12 * 1024 * 1024,
-      maxDimension: 500, // Max width or height
+      maxDimension: 500,
       bucketName: process.env.AWS_BUCKET_NAME,
       region: process.env.AWS_REGION,
+      uploadPath: 'avatars',
       ...config
     };
 
@@ -27,7 +28,7 @@ class UploadManager {
   }
 
   getUploader() {
-    const self = this; // Store reference to access config in transform
+    const self = this;
     
     return multer({
       storage: multerS3({
@@ -43,11 +44,9 @@ class UploadManager {
         key: (req, file, cb) => {
           crypto.randomBytes(16, (err, buf) => {
             if (err) return cb(err);
-            
             const userId = req.user ? req.user.id : 'anonymous';
             const filename = buf.toString('hex') + '.jpg';
-            const key = `avatars/${userId}/${filename}`;
-            
+            const key = `${self.config.uploadPath}/${userId}/${filename}`;
             cb(null, key);
           });
         },
@@ -57,11 +56,9 @@ class UploadManager {
           key: function(req, file, cb) {
             crypto.randomBytes(16, (err, buf) => {
               if (err) return cb(err);
-              
               const userId = req.user ? req.user.id : 'anonymous';
               const filename = buf.toString('hex') + '.jpg';
-              const key = `avatars/${userId}/${filename}`;
-              
+              const key = `${self.config.uploadPath}/${userId}/${filename}`;
               cb(null, key);
             });
           },
@@ -72,7 +69,6 @@ class UploadManager {
                 withoutEnlargement: true
               })
               .jpeg({ quality: 80 });
-            
             cb(null, transformer);
           }
         }]
@@ -89,14 +85,16 @@ class UploadManager {
     });
   }
 
-  async getSignedUrl(key, expiresIn = 3600) {
+  async getSignedUrl(key) {
     try {
+      if (!key) {
+        throw new Error('No key provided for signed URL generation');
+      }
       const command = new GetObjectCommand({
         Bucket: this.config.bucketName,
         Key: key
       });
-      
-      return await getSignedUrl(this.s3Client, command, { expiresIn });
+      return await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
     } catch (error) {
       console.error('Error generating signed URL:', error);
       throw error;
@@ -105,7 +103,6 @@ class UploadManager {
 
   async deleteFile(key) {
     const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
-    
     try {
       await this.s3Client.send(new DeleteObjectCommand({
         Bucket: this.config.bucketName,
