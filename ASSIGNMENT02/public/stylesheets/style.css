@@ -996,7 +996,7 @@ body {
 /* Gallery Page */
 .gallery-content {
   width: 100%;
-  max-width: 80vw;
+  width: 90vw;
   margin: 0 auto;
   display: flex;
   gap: 2rem;
@@ -1005,8 +1005,7 @@ body {
 }
 
 .gallery-header {
-  width: 80vw;
-  max-width: 80vw;
+  width: 90vw;
   margin: 2rem auto;
   display: flex;
   justify-content: space-between;
@@ -1071,7 +1070,6 @@ body {
 
 .gallery-preview {
   position: sticky;
-  top: 2rem;
   display: none;
   width: 40%;
   height: auto;
@@ -1228,4 +1226,62 @@ body {
 
 .gallery-preview-loading .gallery-preview-image {
   opacity: 0;
+}
+
+/* Footer Styles */
+.footer {
+  margin-top: 2rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 0;
+  background-color: #151515;
+  z-index: 100;
+}
+
+.footer-container {
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo img {
+  height: 4rem;
+}
+
+.footer-made-with {
+  font-family: 'SF-Pro', sans-serif;
+  text-align: center;
+  font-size: 1rem;
+  color: #f5f5f5;
+}
+
+.heart {
+  color: #ff0000;
+  display: inline-block;
+  animation: heartbeat 1.5s infinite;
+}
+
+.footer-copyright {
+  font-family: 'SF-Pro', sans-serif;
+  text-align: center;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }

@@ -24,12 +24,12 @@ router.get("/", function (req, res, next) {
 
 /* GET login page. */
 router.get("/login", function (req, res, next) {
-  res.render("login", { title: "Login - PicsForge" });
+  res.render("login", { title: "Login - PicsForge", hideFooter: true  });
 });
 
 /* GET register page. */
 router.get("/register", function (req, res, next) {
-  res.render("register", { title: "Register - PicsForge" });
+  res.render("register", { title: "Register - PicsForge", hideFooter: true  });
 });
 
 /* GET about page. */

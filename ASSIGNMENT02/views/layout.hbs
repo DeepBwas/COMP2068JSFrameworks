@@ -12,5 +12,8 @@
     {{> notification}}
     {{> header}}
     {{{body}}}
+    {{#unless hideFooter}}
+      {{> footer}}
+    {{/unless}}
   </body>
 </html>
