@@ -5,14 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const uploadAreas = document.querySelectorAll(".upload-area");
   const tabs = document.querySelectorAll(".tab-btn");
   const contents = document.querySelectorAll(".tab-content");
-  const storedNotification = sessionStorage.getItem('notification');
-
+  const storedNotification = sessionStorage.getItem("notification");
 
   // Show stored notification
   if (storedNotification) {
     const { message, type } = JSON.parse(storedNotification);
     notify[type](message);
-    sessionStorage.removeItem('notification');
+    sessionStorage.removeItem("notification");
   }
 
   // Hamburger menu
@@ -86,6 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     area.addEventListener("drop", handleDrop);
   });
+
+  // Handle footer JavaScript
+  updateCopyrightYear();
+  initializeSocialLinks();
 });
 
 // Track drag state globally
@@ -431,14 +434,17 @@ function removeAvatar() {
     .then((data) => {
       if (data.success) {
         // Store notification data in sessionStorage
-        sessionStorage.setItem('notification', JSON.stringify({
-          message: data.message,
-          type: 'success'
-        }));
-        
+        sessionStorage.setItem(
+          "notification",
+          JSON.stringify({
+            message: data.message,
+            type: "success",
+          })
+        );
+
         // Hide the modal
         hideDeleteModal("delete-avatar-modal");
-        
+
         // Reload the page
         location.reload();
       } else {
@@ -450,14 +456,176 @@ function removeAvatar() {
       notify.error("Error removing avatar");
     });
 }
-// Escape key handler
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    const visibleContainer = document.querySelector(
-      '.upload-container[style*="display: block"]'
-    );
-    if (visibleContainer) {
-      hideUpload(visibleContainer.id);
-    }
+
+// Gallery JavaScript
+
+let activeGalleryImage = null;
+
+function expandGalleryImage(imageId, imageUrl, altText) {
+  const previousActive = document.querySelector('.gallery-item-active');
+  if (previousActive) {
+    previousActive.classList.remove('gallery-item-active');
   }
-});
+
+  if (activeGalleryImage === imageId) {
+    closeGalleryPreview();
+    return;
+  }
+
+  activeGalleryImage = imageId;
+  const currentItem = document.querySelector(`[data-image-id="${imageId}"]`);
+  currentItem.classList.add('gallery-item-active');
+
+  const previewContainer = document.getElementById('galleryPreview');
+  const previewImage = document.getElementById('galleryPreviewImage');
+  const galleryGrid = document.querySelector('.gallery-grid');
+  const downloadBtn = previewContainer.querySelector('.gallery-download-btn');
+
+  // Add loading class while image loads
+  previewContainer.classList.add('gallery-preview-loading');
+  
+  previewImage.onload = function() {
+    previewContainer.classList.remove('gallery-preview-loading');
+  };
+
+  previewImage.src = imageUrl;
+  previewImage.alt = altText;
+
+  galleryGrid.classList.add('gallery-grid-preview');
+  previewContainer.classList.add('gallery-preview-active');
+}
+
+function callDeleteImage() {
+  deleteImage(activeGalleryImage);
+}
+
+function callDownloadImage() {
+  downloadImage(activeGalleryImage);
+}
+
+function closeGalleryPreview() {
+  activeGalleryImage = null;
+  const galleryGrid = document.querySelector('.gallery-grid');
+  const previewContainer = document.getElementById('galleryPreview');
+  const previewImage = document.getElementById('galleryPreviewImage');
+  const activeItem = document.querySelector('.gallery-item-active');
+
+  if (activeItem) {
+    activeItem.classList.remove('gallery-item-active');
+  }
+
+  galleryGrid.classList.remove('gallery-grid-preview');
+  previewContainer.classList.remove('gallery-preview-active');
+}
+
+function downloadImage(imageId) {
+  fetch(`/gallery/${imageId}/download`, { 
+    method: "GET",
+    credentials: 'same-origin'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then(data => {
+          throw new Error(data.error || "Failed to get download URL");
+        });
+      }
+      return response.json();
+    })
+    .then(({ url, filename }) => {
+      
+      return fetch(url, {
+        method: 'GET',
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Image fetch failed: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          if (!blob) {
+            throw new Error("No blob data received");
+          }
+          
+          const objectUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = 'none';
+          a.href = objectUrl;
+          a.download = filename || 'picsforge-download';
+          document.body.appendChild(a);
+          a.click();
+          
+          setTimeout(() => {
+            window.URL.revokeObjectURL(objectUrl);
+            a.remove();
+          }, 100);
+          
+          notify.success('Downloading image...');
+        });
+    })
+    .catch((error) => {
+      console.error("Download error details:", error);
+      notify.error(`Failed to download image: ${error.message}`);
+    });
+}
+
+
+// Delete images from gallery
+function deleteImage(imageId) {
+  fetch(`/gallery/${imageId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        sessionStorage.setItem(
+          "notification",
+          JSON.stringify({
+            message: data.message,
+            type: "success",
+          })
+        );
+
+        // Hide the modal
+        hideDeleteModal("gallery-delete-modal");
+
+        // Reload the page
+        location.reload();
+      } else {
+        notify.error(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      notify.error("Error deleting image");
+    });
+}
+
+// Footer JavaScript
+function updateCopyrightYear() {
+  const yearElement = document.getElementById("currentYear");
+  if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+  }
+}
+function initializeSocialLinks() {
+  const githubLink = document.querySelector(".footer-github");
+  const linkedinLink = document.querySelector(".footer-linkedin");
+
+  if (githubLink) {
+    githubLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.open("https://github.com/DeepBwas", "_blank");
+    });
+  }
+
+  if (linkedinLink) {
+    linkedinLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.open("https://www.linkedin.com/in/deep-bwas/", "_blank");
+    });
+  }
+}

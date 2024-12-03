@@ -1021,7 +1021,7 @@ body {
 .gallery-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 1.5rem;
   transition: all 0.3s ease;
   width: 100%; 
@@ -1074,8 +1074,6 @@ body {
   width: 40%;
   height: auto;
   background: white;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .gallery-preview-close {
@@ -1231,13 +1229,11 @@ body {
 /* Footer Styles */
 .footer {
   margin-top: 2rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   padding: 1rem 0;
   background-color: #151515;
   z-index: 100;
+  user-select: none;
 }
 
 .footer-container {
@@ -1247,31 +1243,89 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
 .footer-content {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+}
+
+.footer-content::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 70%;
+  width: 1px;
+  background-color: #f5f5f5;
+  opacity: 0.5;
+}
+
+.footer-logo {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2rem;
 }
 
 .footer-logo img {
-  height: 4rem;
+  height: 8rem;
+  width: 8rem;
 }
 
 .footer-made-with {
-  font-family: 'SF-Pro', sans-serif;
-  text-align: center;
+  flex: 1;
+  padding: 1rem 0 0 2rem;
   font-size: 1rem;
   color: #f5f5f5;
+  
+}
+
+.footer-made-with p {
+  width: 8rem;
+  font-family: 'SF-Pro', sans-serif;
 }
 
 .heart {
+  font-size: 1rem;
   color: #ff0000;
   display: inline-block;
   animation: heartbeat 1.5s infinite;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.footer-socials span {
+  font-family: 'SF-Pro', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #f5f5f5;
+  text-align: center;
+  gap:1rem;
+  background: none;
+  border-radius: 5px;
+  padding: 0.3rem;
+  border: 1px #222222 dashed;
+  cursor: pointer;
+}
+
+.footer-socials span svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-bottom: 0.1rem;
+  margin-right: 0.1rem;
+  fill: #f5f5f5;
 }
 
 .footer-copyright {
@@ -1283,5 +1337,5 @@ body {
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.15); }
 }
