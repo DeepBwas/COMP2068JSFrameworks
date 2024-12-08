@@ -1,74 +1,76 @@
-<div class="register-container">
-  <img src="/images/logo.png" class="register-logo" alt="Logo" />
-  <h3 class="register-title">Create Your Account</h3>
-  <form action="/auth/register" method="POST" class="register-form">
-    <div class="register-form-group">
-      <label for="username" class="register-form-label">Username</label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        class="register-form-input"
-        autocomplete="username"
-      />
-    </div>
-    <div class="register-form-group">
-      <label for="email" class="register-form-label">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        class="register-form-input"
-        autocomplete="email"
-      />
-    </div>
-    <div class="register-form-group">
-      <label for="password" class="register-form-label">Password</label>
-      <div class="password-container">
+<section class="register-page">
+  <div class="register-container">
+    <img src="/images/logo.png" class="register-logo" alt="Logo" />
+    <h3 class="register-title">Create Your Account</h3>
+    <form action="/auth/register" method="POST" class="register-form">
+      <div class="register-form-group">
+        <label for="username" class="register-form-label">Username</label>
         <input
-          type="password"
-          id="password"
-          name="password"
+          type="text"
+          id="username"
+          name="username"
           class="register-form-input"
-          autocomplete="new-password"
+          autocomplete="username"
         />
-        <span
-          class="password-toggle"
-          onclick="togglePasswordVisibility('password')"
-        >
-          <img
-            src="/images/eye.svg"
-            alt="Toggle Password Visibility"
-            class="eye-icon"
-          />
-        </span>
       </div>
-    </div>
-    <div class="register-form-group">
-      <label for="confirm-password" class="register-form-label">Confirm Password</label>
-      <div class="password-container">
+      <div class="register-form-group">
+        <label for="email" class="register-form-label">Email</label>
         <input
-          type="password"
-          id="confirm-password"
-          name="confirmPassword"
+          type="email"
+          id="email"
+          name="email"
           class="register-form-input"
-          autocomplete="new-password"
+          autocomplete="email"
         />
-        <span
-          class="password-toggle"
-          onclick="togglePasswordVisibility('confirm-password')"
-        >
-          <img
-            src="/images/eye.svg"
-            alt="Toggle Password Visibility"
-            class="eye-icon"
-          />
-        </span>
       </div>
-    </div>
-    <button type="submit" class="register-button">Register</button>
-  </form>
-  <div class="social-login">
+      <div class="register-form-group">
+        <label for="password" class="register-form-label">Password</label>
+        <div class="password-container">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="register-form-input"
+            autocomplete="new-password"
+          />
+          <span
+            class="password-toggle"
+            onclick="togglePasswordVisibility('password')"
+          >
+            <img
+              src="/images/eye.svg"
+              alt="Toggle Password Visibility"
+              class="eye-icon"
+            />
+          </span>
+        </div>
+      </div>
+      <div class="register-form-group">
+        <label for="confirm-password" class="register-form-label">Confirm
+          Password</label>
+        <div class="password-container">
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirmPassword"
+            class="register-form-input"
+            autocomplete="new-password"
+          />
+          <span
+            class="password-toggle"
+            onclick="togglePasswordVisibility('confirm-password')"
+          >
+            <img
+              src="/images/eye.svg"
+              alt="Toggle Password Visibility"
+              class="eye-icon"
+            />
+          </span>
+        </div>
+      </div>
+      <button type="submit" class="register-button">Register</button>
+    </form>
+    <div class="social-login">
       <button
         class="social-login-button"
         onclick="location.href='/auth/google'"
@@ -90,6 +92,7 @@
         />
       </button>
     </div>
-  <h3 class="register-login-text">Already have an account?
-    <span onclick="location.href='/login'">Login now</span></h3>
-</div>
+    <h3 class="register-login-text">Already have an account?
+      <span onclick="location.href='/login'">Login now</span></h3>
+  </div>
+</section>

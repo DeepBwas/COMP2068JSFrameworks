@@ -1,1 +1,95 @@
-<p style="padding: 4rem; font-family: 'SF-Pro', sans-serif; font-size: 2rem;">Welcome to PicsForge, This is home.hbs!</p>
+<div class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Transform Your Photos</h1>
+    <p class="hero-subtitle">Professional editing tools at your fingertips</p>
+    <div class="hero-cta">
+      <a href="/gallery" class="primary-button">
+        <button class="cta-button">Start Editing</button>
+      </a>
+      <a href="/about" class="secondary-button">
+        <button class="learn-button">Learn More</button>
+      </a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="image-slideshow" id="heroSlideshow" data-interval="5000">
+      <img
+        src="/images/home-image-1.jpg"
+        alt="Mount Fuji"
+        class="slide active"
+      />
+      <img src="/images/home-image-2.jpg" alt="Aurora" class="slide" />
+      <img src="/images/home-image-3.jpg" alt="Norway" class="slide" />
+      <img src="/images/home-image-4.jpg" alt="New York" class="slide" />
+      <img
+        src="/images/home-image-5.jpg"
+        alt="Switzerland"
+        class="slide" 
+      />
+      <div class="static-overlay"></div>
+    </div>
+  </div>
+</div>
+
+<section class="gallery-showcase">
+  <h2>Community Gallery</h2>
+  <div class="community-gallery-grid">
+    {{#if publicImages.length}}
+      {{#each publicImages}}
+        <div class="community-gallery-item">
+          <img src="{{this.imageUrl}}" 
+               alt="{{this.title}}"
+               loading="lazy"
+               class="gallery-image" />
+          <div class="image-overlay">
+            <p class="image-author">By <span>{{this.userName}}</span></p>
+          </div>
+        </div>
+      {{/each}}
+    {{else}}
+      <p class="no-images">No images found</p>
+    {{/if}}
+  </div>
+</section>
+
+<section class="features">
+  <h2>Why Choose Our Editor</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="material-icons">auto_fix_high</span>
+      <h3>Smart Filters</h3>
+      <p>Professional-grade filters to enhance your photos instantly</p>
+    </div>
+    <div class="feature-card">
+      <span class="material-icons">tune</span>
+      <h3>Fine Controls</h3>
+      <p>Precise adjustment tools for perfect results</p>
+    </div>
+    <div class="feature-card">
+      <span class="material-icons">cloud_upload</span>
+      <h3>Cloud Storage</h3>
+      <p>Securely store and access your photos anywhere</p>
+    </div>
+  </div>
+</section>
+
+<section class="workflow">
+  <h2>How It Works</h2>
+  <div class="workflow-steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <h3>Upload</h3>
+      <p>Upload your photos securely to your gallery</p>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <h3>Edit</h3>
+      <p>Transform your images with powerful tools</p>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <h3>Save</h3>
+      <p>Download or share your edited masterpiece</p>
+    </div>
+  </div>
+</section>

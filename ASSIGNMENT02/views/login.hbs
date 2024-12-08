@@ -1,35 +1,43 @@
-<div class="login-container">
-  <img src="images/logo.png" class="login-logo" alt="Logo" />
-  <h3 class="login-title">Login to Your Account</h3>
-  <form action="/auth/login" method="POST" class="login-form">
-    <div class="login-form-group">
-      <label for="email" class="login-form-label">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        class="login-form-input"
-        autocomplete="email"
-      />
-    </div>
-    <div class="login-form-group">
-      <label for="password" class="login-form-label">Password</label>
-      <div class="password-container">
+<section class="login-page">
+  <div class="login-container">
+    <img src="images/logo.png" class="login-logo" alt="Logo" />
+    <h3 class="login-title">Login to Your Account</h3>
+    <form action="/auth/login" method="POST" class="login-form">
+      <div class="login-form-group">
+        <label for="email" class="login-form-label">Email</label>
         <input
-          type="password"
-          id="password"
-          name="password"
+          type="email"
+          id="email"
+          name="email"
           class="login-form-input"
-          autocomplete="current-password"
+          autocomplete="email"
         />
-        <span class="password-toggle" onclick="togglePasswordVisibility('password')">
-          <img src="images/eye.svg" alt="Toggle Password Visibility" class="eye-icon" />
-        </span>
       </div>
-    </div>
-    <button type="submit" class="login-button">Login</button>
-  </form>
-  <div class="social-login">
+      <div class="login-form-group">
+        <label for="password" class="login-form-label">Password</label>
+        <div class="password-container">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="login-form-input"
+            autocomplete="current-password"
+          />
+          <span
+            class="password-toggle"
+            onclick="togglePasswordVisibility('password')"
+          >
+            <img
+              src="images/eye.svg"
+              alt="Toggle Password Visibility"
+              class="eye-icon"
+            />
+          </span>
+        </div>
+      </div>
+      <button type="submit" class="login-button">Login</button>
+    </form>
+    <div class="social-login">
       <button
         class="social-login-button"
         onclick="location.href='/auth/google'"
@@ -51,5 +59,7 @@
         />
       </button>
     </div>
-  <h3 class="login-register-text">Do not have an account? <span onclick="location.href='/register'">Register now</span></h3>
-</div>
+    <h3 class="login-register-text">Do not have an account?
+      <span onclick="location.href='/register'">Register now</span></h3>
+  </div>
+</section>

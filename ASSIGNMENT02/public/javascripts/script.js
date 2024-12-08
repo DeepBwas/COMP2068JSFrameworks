@@ -42,6 +42,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Home page slideshow
+  const slideshow = document.getElementById("heroSlideshow");
+  if (slideshow) {
+    const heroSlideshow = new Slideshow(slideshow);
+
+    // Optional: Pause on hover
+    slideshow.addEventListener("mouseenter", () => heroSlideshow.pause());
+    slideshow.addEventListener("mouseleave", () => heroSlideshow.resume());
+  }
+
   // Initialize upload triggers
   const uploadTriggers = document.querySelectorAll("[data-upload-trigger]");
   uploadTriggers.forEach((trigger) => {
@@ -158,6 +168,47 @@ function unhighlight(e) {
     setTimeout(() => {
       isProcessingDrag = false;
     }, 100);
+  }
+}
+
+class Slideshow {
+  constructor(element) {
+    this.slideshow = element;
+    this.slides = Array.from(element.getElementsByClassName("slide"));
+    this.currentIndex = 0;
+    this.interval = parseInt(element.dataset.interval) || 5000;
+    this.timer = null;
+
+    this.init();
+  }
+
+  init() {
+    // Set first slide as active
+    this.slides[0].classList.add("active");
+    this.startSlideshow();
+  }
+
+  startSlideshow() {
+    this.timer = setInterval(() => this.nextSlide(), this.interval);
+  }
+
+  nextSlide() {
+    // Remove active class from current slide
+    this.slides[this.currentIndex].classList.remove("active");
+
+    // Update index
+    this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+
+    // Add active class to new slide
+    this.slides[this.currentIndex].classList.add("active");
+  }
+
+  pause() {
+    clearInterval(this.timer);
+  }
+
+  resume() {
+    this.startSlideshow();
   }
 }
 
@@ -462,9 +513,9 @@ function removeAvatar() {
 let activeGalleryImage = null;
 
 function expandGalleryImage(imageId, imageUrl, altText) {
-  const previousActive = document.querySelector('.gallery-item-active');
+  const previousActive = document.querySelector(".gallery-item-active");
   if (previousActive) {
-    previousActive.classList.remove('gallery-item-active');
+    previousActive.classList.remove("gallery-item-active");
   }
 
   if (activeGalleryImage === imageId) {
@@ -474,25 +525,25 @@ function expandGalleryImage(imageId, imageUrl, altText) {
 
   activeGalleryImage = imageId;
   const currentItem = document.querySelector(`[data-image-id="${imageId}"]`);
-  currentItem.classList.add('gallery-item-active');
+  currentItem.classList.add("gallery-item-active");
 
-  const previewContainer = document.getElementById('galleryPreview');
-  const previewImage = document.getElementById('galleryPreviewImage');
-  const galleryGrid = document.querySelector('.gallery-grid');
-  const downloadBtn = previewContainer.querySelector('.gallery-download-btn');
+  const previewContainer = document.getElementById("galleryPreview");
+  const previewImage = document.getElementById("galleryPreviewImage");
+  const galleryGrid = document.querySelector(".gallery-grid");
+  const downloadBtn = previewContainer.querySelector(".gallery-download-btn");
 
   // Add loading class while image loads
-  previewContainer.classList.add('gallery-preview-loading');
-  
-  previewImage.onload = function() {
-    previewContainer.classList.remove('gallery-preview-loading');
+  previewContainer.classList.add("gallery-preview-loading");
+
+  previewImage.onload = function () {
+    previewContainer.classList.remove("gallery-preview-loading");
   };
 
   previewImage.src = imageUrl;
   previewImage.alt = altText;
 
-  galleryGrid.classList.add('gallery-grid-preview');
-  previewContainer.classList.add('gallery-preview-active');
+  galleryGrid.classList.add("gallery-grid-preview");
+  previewContainer.classList.add("gallery-preview-active");
 }
 
 function callDeleteImage() {
@@ -509,62 +560,61 @@ function callEditImage() {
 
 function closeGalleryPreview() {
   activeGalleryImage = null;
-  const galleryGrid = document.querySelector('.gallery-grid');
-  const previewContainer = document.getElementById('galleryPreview');
-  const previewImage = document.getElementById('galleryPreviewImage');
-  const activeItem = document.querySelector('.gallery-item-active');
+  const galleryGrid = document.querySelector(".gallery-grid");
+  const previewContainer = document.getElementById("galleryPreview");
+  const previewImage = document.getElementById("galleryPreviewImage");
+  const activeItem = document.querySelector(".gallery-item-active");
 
   if (activeItem) {
-    activeItem.classList.remove('gallery-item-active');
+    activeItem.classList.remove("gallery-item-active");
   }
 
-  galleryGrid.classList.remove('gallery-grid-preview');
-  previewContainer.classList.remove('gallery-preview-active');
+  galleryGrid.classList.remove("gallery-grid-preview");
+  previewContainer.classList.remove("gallery-preview-active");
 }
 
 function downloadImage(imageId) {
-  fetch(`/gallery/${imageId}/download`, { 
+  fetch(`/gallery/${imageId}/download`, {
     method: "GET",
-    credentials: 'same-origin'
+    credentials: "same-origin",
   })
     .then((response) => {
       if (!response.ok) {
-        return response.json().then(data => {
+        return response.json().then((data) => {
           throw new Error(data.error || "Failed to get download URL");
         });
       }
       return response.json();
     })
     .then(({ url, filename }) => {
-      
       return fetch(url, {
-        method: 'GET',
+        method: "GET",
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Image fetch failed: ${response.status}`);
           }
           return response.blob();
         })
-        .then(blob => {
+        .then((blob) => {
           if (!blob) {
             throw new Error("No blob data received");
           }
-          
+
           const objectUrl = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
-          a.style.display = 'none';
+          a.style.display = "none";
           a.href = objectUrl;
-          a.download = filename || 'picsforge-download';
+          a.download = filename || "picsforge-download";
           document.body.appendChild(a);
           a.click();
-          
+
           setTimeout(() => {
             window.URL.revokeObjectURL(objectUrl);
             a.remove();
           }, 100);
-          
-          notify.success('Downloading image...');
+
+          notify.success("Downloading image...");
         });
     })
     .catch((error) => {
@@ -572,7 +622,6 @@ function downloadImage(imageId) {
       notify.error(`Failed to download image: ${error.message}`);
     });
 }
-
 
 // Delete images from gallery
 function deleteImage(imageId) {

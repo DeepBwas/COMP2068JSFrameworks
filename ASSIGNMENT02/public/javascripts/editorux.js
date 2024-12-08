@@ -795,12 +795,6 @@ document.addEventListener("DOMContentLoaded", function () {
     element.title = tooltipText;
   });
 
-  // Add zoom hint for desktop
-  if (!isMobileDevice()) {
-    editImage.classList.add("can-zoom");
-    notify.info("Tip: Use Ctrl + Click to zoom");
-  }
-
   // Clean up function
   function cleanup() {
     window.removeEventListener("beforeunload", handleBeforeUnload);

@@ -21,27 +21,34 @@ const NotificationManager = require("./services/NotificationManager");
 const app = express();
 
 // MongoDB Connection
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    // Test the connection
-    mongoose.connection.db
-      .admin()
-      .ping()
-      .then(() => console.log("MongoDB ping successful!"))
-      .catch((err) => console.error("MongoDB ping failed:", err));
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });
-
-// MongoDB connection event handlers
-mongoose.connection.on("error", (err) => {
-  console.error("MongoDB error occurred:", err);
+mongoose.connect(process.env.MONGODB_URI, {
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  family: 4
+}).then(() => {
+  console.log("Connected to MongoDB");
+}).catch(err => {
+  console.error("MongoDB connection error:", err);
+  process.exit(1);
 });
 
-mongoose.connection.on("disconnected", () => {
-  console.log("MongoDB disconnected");
+// Add connection event handlers
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connection established');
+});
+
+mongoose.connection.on('error', err => {
+  console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB connection disconnected');
+});
+
+// Clean up connection on app termination
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  process.exit(0);
 });
 
 // view engine setup
