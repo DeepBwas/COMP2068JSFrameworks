@@ -14,6 +14,7 @@ const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const galleryRouter = require('./routes/gallery');
+const editorRouter = require('./routes/editor');
 
 const NotificationManager = require("./services/NotificationManager");
 
@@ -99,12 +100,17 @@ hbs.registerHelper("getInitials", function (username) {
   }
 });
 
+// Payload size limit
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
+
 // Routes
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/", profileRouter);
 app.use('/', galleryRouter);
+app.use('/editor', editorRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

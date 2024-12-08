@@ -503,6 +503,10 @@ function callDownloadImage() {
   downloadImage(activeGalleryImage);
 }
 
+function callEditImage() {
+  window.location.href = `/editor/${activeGalleryImage}/edit`;
+}
+
 function closeGalleryPreview() {
   activeGalleryImage = null;
   const galleryGrid = document.querySelector('.gallery-grid');

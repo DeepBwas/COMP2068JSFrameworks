@@ -139,4 +139,42 @@ router.delete("/gallery/:imageId", isAuthenticated, async (req, res) => {
   }
 });
 
+// Get editor page for image
+router.get("editor/:imageId/edit", isAuthenticated, async (req, res) => {
+    try {
+        const image = await GalleryImage.findById(req.params.imageId);
+        if (!image) {
+            res.notify.error("Image not found");
+            return res.redirect("/gallery");
+        }
+
+        if (image.userId.toString() !== req.user.id) {
+            res.notify.error("Unauthorized");
+            return res.redirect("/gallery");
+        }
+
+        // Get signed URL for image
+        const signedUrl = await editorManager.getSignedUrl(image.imageKey);
+        const processedImage = image.toObject();
+        processedImage.imageUrl = signedUrl;
+
+        // Add cache control headers
+        res.set({
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        });
+
+        res.render("editor", {
+            title: "Edit Image",
+            image: processedImage,
+            active: { gallery: true },
+        });
+    } catch (error) {
+        console.error("Editor error:", error);
+        res.notify.error("Error loading editor");
+        res.redirect("/gallery");
+    }
+});
+
 module.exports = router;

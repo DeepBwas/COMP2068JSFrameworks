@@ -1,0 +1,198 @@
+<div class="editor-page">
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.1.2/caman.full.min.js"
+  ></script>
+
+  <div class="editor-header">
+    <div class="editor-nav">
+      <a href="/gallery" class="editor-back-btn">
+        <span class="material-icons">arrow_back</span>
+        Gallery
+      </a>
+      <div class="editor-actions">
+        <button class="editor-reset-btn">
+          <span class="material-icons">restart_alt</span>
+          Reset
+        </button>
+        <button class="editor-save-btn">
+          <span class="material-icons">save</span>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="editor-container">
+    <div class="editor-workspace">
+      <div id="loadingIndicator" class="loading-indicator">Loading image...</div>
+      <div id="canvasContainer" class="canvas-container">
+        <canvas
+          id="editImage"
+          data-caman-hidpi-disabled="true"
+          data-image-url="{{{image.imageUrl}}}"
+          class="editor-image"
+        >
+        </canvas>
+      </div>
+    </div>
+
+    <div class="editor-controls">
+      <div class="editor-options">
+        <button class="option-btn" data-option="adjust">
+          <span class="material-icons">tune</span>
+          Adjust
+        </button>
+        <button class="option-btn" data-option="filter">
+          <span class="material-icons">auto_fix_high</span>
+          Filters
+        </button>
+        <button class="option-btn" data-option="crop">
+          <span class="material-icons">crop</span>
+          Crop
+        </button>
+      </div>
+
+      <div class="editor-suboptions">
+        {{! Adjust options }}
+        <div class="suboption-group" id="adjustOptions">
+          <div class="slider-control">
+            <label>Brightness: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="brightness"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Contrast: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="contrast"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Saturation: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="saturation"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Brilliance: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="brilliance"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Highlights: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="highlights"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Shadows: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="shadows"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Warmth: 0</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="warmth"
+            />
+          </div>
+          <div class="slider-control">
+            <label>Sharpness: 0</label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="adjust-slider"
+              data-adjust="sharpness"
+            />
+          </div>
+        </div>
+
+        {{! Filter options }}
+        <div class="suboption-group filters" id="filterOptions">
+          <button class="filter-btn active" data-filter="none">
+            <span class="filter-preview"></span>
+            None
+          </button>
+          <button class="filter-btn" data-filter="vivid">
+            <span class="filter-preview"></span>
+            Vivid
+          </button>
+          <button class="filter-btn" data-filter="dramatic">
+            <span class="filter-preview"></span>
+            Dramatic
+          </button>
+          <button class="filter-btn" data-filter="mono">
+            <span class="filter-preview"></span>
+            Mono
+          </button>
+          <button class="filter-btn" data-filter="silvertone">
+            <span class="filter-preview"></span>
+            Silvertone
+          </button>
+          <button class="filter-btn" data-filter="noir">
+            <span class="filter-preview"></span>
+            Noir
+          </button>
+        </div>
+        {{! Crop options }}
+        <div class="suboption-group" id="cropOptions">
+          <div class="crop-buttons">
+            <button class="crop-cancel-btn">
+              <span class="material-icons">close</span>
+            </button>
+            <button
+              class="crop-btn active"
+              data-ratio="original"
+            >Original</button>
+            <button class="crop-btn" data-ratio="1">Square</button>
+            <button class="crop-btn" data-ratio="0.5625">16:9</button>
+            <button class="crop-btn" data-ratio="0.75">4:3</button>
+            <button class="crop-btn" data-ratio="1.91">Wide</button>
+            <button class="crop-btn" data-ratio="0">Free</button>
+            <button class="crop-apply-btn">
+              <span class="material-icons">check</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

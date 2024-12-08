@@ -998,6 +998,7 @@ body {
   width: 100%;
   width: 90vw;
   margin: 0 auto;
+  margin-bottom: 2rem;
   display: flex;
   gap: 2rem;
   overflow: hidden;
@@ -1226,9 +1227,247 @@ body {
   opacity: 0;
 }
 
+/* Editor Styles */
+.editor-page {
+  min-height: 100vh;
+  background: #202020;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-header {
+  background: #333;
+  padding: 1rem 2rem;
+}
+
+.editor-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editor-back-btn {
+  cursor: pointer;
+}
+
+.editor-reset-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #444;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-family: 'SF-Pro', sans-serif;
+}
+
+.editor-reset-btn:hover {
+  background: #555;
+}
+
+.editor-reset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editor-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  text-decoration: none;
+  font-family: "SF-Pro", sans-serif;
+}
+
+.editor-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #fe0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "SF-Pro", sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.editor-save-btn:hover {
+  background: #aa0000;
+}
+
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.editor-workspace {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #1a1a1a;
+  min-height: 400px;
+}
+
+.editor-image {
+  max-width: 100%;
+  max-height: calc(100vh - 300px);
+  background: #1a1a1a;
+}
+
+.editor-controls {
+  background: #333;
+  padding: 1.5rem;
+  position: sticky;
+  bottom: 0;
+}
+
+.editor-options {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin-bottom: 1rem;
+}
+
+.option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  font-family: "SF-Pro", sans-serif;
+  font-size: 0.9rem;
+}
+
+.option-btn:hover {
+  opacity: 1;
+}
+
+.option-btn.active {
+  opacity: 1;
+  color: #fe0000;
+}
+
+.editor-suboptions {
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.suboption-group {
+  display: none;
+  padding: 1rem 0;
+  border-top: 1px solid #444;
+}
+
+.suboption-group.active {
+  display: block;
+}
+
+.suboption-group.filters.active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+
+.slider-control {
+  color: white;
+  margin-bottom: 1rem;
+  font-family: "SF-Pro", sans-serif;
+}
+
+.slider-control label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.slider-control input[type="range"] {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  background: #555;
+  border-radius: 2px;
+  outline: none;
+}
+
+.slider-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fe0000;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.filter-btn, .crop-btn {
+  padding: 0.75rem 1.5rem;
+  margin: 0.25rem;
+  background: #444;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "SF-Pro", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover, .crop-btn:hover {
+  background: #555;
+}
+
+.filter-btn.active, .crop-btn.active {
+  background: #fe0000;
+}
+
+.editor-image.can-zoom {
+  cursor: zoom-in;
+}
+
+.editor-image.zooming {
+  cursor: zoom-out;
+}
+
+.crop-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.crop-apply-btn {
+  margin-left: 1rem;
+}
+
+.crop-cancel-btn {
+  margin-right: 1rem;
+}
+
+.crop-apply-btn .material-icons, .crop-cancel-btn .material-icons {
+  font-size: 1rem;
+}
+
 /* Footer Styles */
 .footer {
-  margin-top: 2rem;
   width: 100%;
   padding: 1rem 0;
   background-color: #151515;

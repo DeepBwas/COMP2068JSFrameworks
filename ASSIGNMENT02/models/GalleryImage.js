@@ -10,31 +10,14 @@ const galleryImageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  imageUrl: {
-    type: String,
-    required: true
-  },
   originalName: {
     type: String,
     required: true
   },
-  description: {
-    type: String,
-    default: ''
-  },
-  isPublic: {
-    type: Boolean,
-    default: false
-  },
-  isVersionControlEnabled: {
-    type: Boolean,
-    default: true
-  },
-  uploadDate: {
+  lastEdited: {
     type: Date,
-    default: Date.now
+    default: null
   }
 }, { timestamps: true });
-
 
 module.exports = mongoose.models.GalleryImage || mongoose.model('GalleryImage', galleryImageSchema);
