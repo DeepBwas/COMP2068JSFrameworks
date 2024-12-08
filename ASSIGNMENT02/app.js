@@ -26,24 +26,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   socketTimeoutMS: 45000,
   family: 4
 }).then(() => {
-  console.log("Connected to MongoDB");
 }).catch(err => {
   console.error("MongoDB connection error:", err);
   process.exit(1);
 });
 
-// Add connection event handlers
-mongoose.connection.on('connected', () => {
-  console.log('MongoDB connection established');
-});
-
-mongoose.connection.on('error', err => {
-  console.error('MongoDB connection error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB connection disconnected');
-});
 
 // Clean up connection on app termination
 process.on('SIGINT', async () => {

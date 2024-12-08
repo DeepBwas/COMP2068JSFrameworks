@@ -168,7 +168,7 @@ body {
   font-family: "SF-Pro", sans-serif;
   font-weight: bold;
   overflow: hidden;
-  position: relative; 
+  position: relative;
 }
 
 .avatar-image {
@@ -578,7 +578,7 @@ body {
   margin-bottom: 1rem;
   line-height: 1.2;
   animation: fadeInUp 0.8s ease;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .hero-subtitle {
@@ -586,14 +586,14 @@ body {
   color: #cccccc;
   margin-bottom: 2rem;
   animation: fadeInUp 0.8s ease 0.2s backwards;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .hero-cta {
   display: flex;
   gap: 1rem;
   animation: fadeInUp 0.8s ease 0.4s backwards;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .hero-image {
@@ -617,7 +617,7 @@ body {
   font-size: 2.5rem;
   color: #333333;
   margin-bottom: 4rem;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   text-decoration: underline 3px solid #fe0000;
 }
 
@@ -634,7 +634,7 @@ body {
   border-radius: 12px;
   background: #d6d6d6;
   transition: transform 0.3s ease;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .feature-card:hover {
@@ -657,7 +657,7 @@ body {
   font-size: 2.5rem;
   color: #333;
   margin-bottom: 4rem;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   text-decoration: underline 3px solid #fe0000;
 }
 
@@ -674,8 +674,9 @@ body {
   flex: 1;
 }
 
-.step h3, .step p {
-  font-family: 'SF-Pro', sans-serif;
+.step h3,
+.step p {
+  font-family: "SF-Pro", sans-serif;
 }
 
 .step-number {
@@ -689,7 +690,7 @@ body {
   justify-content: center;
   font-size: 1.5rem;
   margin: 0 auto 1rem;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .cta-button {
@@ -734,12 +735,17 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -774,7 +780,7 @@ body {
 /* Index Page */
 .gallery-showcase {
   padding: 4rem 2rem;
-  background-color: #2a2a2a;;
+  background-color: #2a2a2a;
 }
 
 .gallery-showcase h2 {
@@ -782,7 +788,7 @@ body {
   font-size: 2.5rem;
   color: #f5f5f5;
   margin-bottom: 3rem;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   text-decoration: underline 3px solid #fe0000;
 }
 
@@ -819,7 +825,7 @@ body {
   left: 0;
   right: 0;
   padding: 1rem;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -833,7 +839,7 @@ body {
   margin: 0;
   font-size: 0.9rem;
   opacity: 0.8;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .no-images {
@@ -1016,7 +1022,7 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   margin-top: 1rem;
 }
 
@@ -1132,7 +1138,7 @@ body {
 }
 
 .upload-area.has-preview .preview-image {
-  width: 100%;  
+  width: 100%;
   height: 100%;
   object-fit: contain;
   max-height: fit-content;
@@ -1207,7 +1213,7 @@ body {
   left: 40%;
   transform: translateX(-40%);
   padding: 8px 20px;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   background: #fe0000;
   color: #f5f5f5;
   border: none;
@@ -1279,7 +1285,7 @@ body {
 .delete-modal-header h3 {
   margin: 0;
   color: #f5f5f5;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .delete-close-btn {
@@ -1298,7 +1304,7 @@ body {
 .delete-modal-body {
   margin-bottom: 20px;
   color: #f5f5f5;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .delete-modal-footer {
@@ -1307,13 +1313,13 @@ body {
   gap: 10px;
 }
 
-.delete-cancel-btn, 
+.delete-cancel-btn,
 .delete-confirm-btn {
   padding: 8px 16px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .delete-cancel-btn {
@@ -1335,7 +1341,7 @@ body {
 }
 
 /* Gallery Page */
-.gallery-container{
+.gallery-container {
   background-color: #333333;
 }
 
@@ -1343,7 +1349,7 @@ body {
   width: 100%;
   width: 90vw;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding-bottom: 4rem;
   padding-top: 2rem;
   display: flex;
   gap: 2rem;
@@ -1372,7 +1378,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 1.5rem;
   transition: all 0.3s ease;
-  width: 100%; 
+  width: 100%;
   min-width: 0;
 }
 
@@ -1613,7 +1619,7 @@ body {
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .editor-reset-btn:hover {
@@ -1735,7 +1741,6 @@ body {
   justify-content: center;
 }
 
-
 .slider-control {
   color: white;
   margin-bottom: 1rem;
@@ -1767,7 +1772,8 @@ body {
   cursor: pointer;
 }
 
-.filter-btn, .crop-btn {
+.filter-btn,
+.crop-btn {
   padding: 0.75rem 1.5rem;
   margin: 0.25rem;
   background: #444;
@@ -1779,11 +1785,13 @@ body {
   transition: all 0.3s ease;
 }
 
-.filter-btn:hover, .crop-btn:hover {
+.filter-btn:hover,
+.crop-btn:hover {
   background: #555;
 }
 
-.filter-btn.active, .crop-btn.active {
+.filter-btn.active,
+.crop-btn.active {
   background: #fe0000;
 }
 
@@ -1795,6 +1803,68 @@ body {
   cursor: zoom-out;
 }
 
+.canvas-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.crop-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.crop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.crop-box {
+  position: absolute;
+  border: 2px solid white;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  pointer-events: all;
+  cursor: move;
+}
+
+.crop-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border: 1px solid #333;
+}
+
+.crop-handle.tl {
+  top: -5px;
+  left: -5px;
+  cursor: nw-resize;
+}
+.crop-handle.tr {
+  top: -5px;
+  right: -5px;
+  cursor: ne-resize;
+}
+.crop-handle.bl {
+  bottom: -5px;
+  left: -5px;
+  cursor: sw-resize;
+}
+.crop-handle.br {
+  bottom: -5px;
+  right: -5px;
+  cursor: se-resize;
+}
+
 .crop-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -1804,14 +1874,30 @@ body {
 
 .crop-apply-btn {
   margin-left: 1rem;
+  background-color: #fe0000;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
 }
 
 .crop-cancel-btn {
   margin-right: 1rem;
+  background-color: #fe0000;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
 }
 
-.crop-apply-btn .material-icons, .crop-cancel-btn .material-icons {
+.crop-apply-btn .material-icons,
+.crop-cancel-btn .material-icons {
   font-size: 1rem;
+  margin: 0;
+}
+
+.crop-apply-btn:hover, .crop-cancel-btn:hover {
+  background-color: #aa0000;
 }
 
 /* Footer Styles */
@@ -1842,7 +1928,7 @@ body {
 }
 
 .footer-content::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -1870,12 +1956,11 @@ body {
   padding: 1rem 0 0 2rem;
   font-size: 1rem;
   color: #f5f5f5;
-  
 }
 
 .footer-made-with p {
   width: 8rem;
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
 }
 
 .heart {
@@ -1894,12 +1979,12 @@ body {
 }
 
 .footer-socials span {
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   font-weight: 500;
   font-size: 1rem;
   color: #f5f5f5;
   text-align: center;
-  gap:1rem;
+  gap: 1rem;
   background: none;
   border-radius: 5px;
   padding: 0.3rem;
@@ -1916,13 +2001,18 @@ body {
 }
 
 .footer-copyright {
-  font-family: 'SF-Pro', sans-serif;
+  font-family: "SF-Pro", sans-serif;
   text-align: center;
   color: #f5f5f5;
   font-size: 0.9rem;
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
 }
