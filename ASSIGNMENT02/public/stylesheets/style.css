@@ -849,6 +849,113 @@ body {
   color: #666;
 }
 
+/* About Page */
+.about-page {
+  padding: 4rem;
+  font-family: 'SF-Pro', sans-serif;
+  background: #202020;
+  color: white;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-decoration: 3px underline solid #fe0000;
+}
+
+.about-description {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.about-subtitle {
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.about-features {
+  list-style: none;
+  padding: 0;
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.about-features li {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.about-features li span {
+  text-decoration: underline 3px solid #fe0000;
+}
+
+.about-mission {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Privacy Policy Page */
+.privacy-policy-page {
+  padding: 4rem;
+  font-family: 'SF-Pro', sans-serif;
+  background: #202020;
+  color: white;
+}
+
+.privacy-policy-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.privacy-policy-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-decoration: underline 3px solid #fe0000;
+}
+
+.privacy-policy-intro {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.privacy-section {
+  margin-bottom: 2rem;
+}
+
+.privacy-section-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.privacy-section-title span {
+  color: #fe0000;
+}
+
+.privacy-section-content {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.privacy-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.privacy-list li {
+  margin-bottom: 0.5rem;
+}
+
 /* Profile Page */
 
 .profile-page {
