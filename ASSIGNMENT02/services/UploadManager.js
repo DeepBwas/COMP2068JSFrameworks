@@ -118,7 +118,6 @@ async uploadBuffer(buffer, key) {
       .jpeg({ quality: 80 })
       .toBuffer();
 
-    // Upload to S3
     const command = new PutObjectCommand({
       Bucket: this.config.bucketName,
       Key: key,

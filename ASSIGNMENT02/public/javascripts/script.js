@@ -1,4 +1,3 @@
-// Side nav toggle
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const sideNav = document.getElementById("sideNav");
@@ -7,20 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const contents = document.querySelectorAll(".tab-content");
   const storedNotification = sessionStorage.getItem("notification");
 
-  // Show stored notification
   if (storedNotification) {
     const { message, type } = JSON.parse(storedNotification);
     notify[type](message);
     sessionStorage.removeItem("notification");
   }
 
-  // Hamburger menu
   hamburger.addEventListener("click", () => {
     hamburger.classList.toggle("active");
     sideNav.classList.toggle("active");
   });
 
-  // Close menu when clicking outside
   document.addEventListener("click", (e) => {
     if (
       !hamburger.contains(e.target) &&
@@ -32,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Tab functionality
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       tabs.forEach((t) => t.classList.remove("active"));
@@ -42,17 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Home page slideshow
   const slideshow = document.getElementById("heroSlideshow");
   if (slideshow) {
     const heroSlideshow = new Slideshow(slideshow);
 
-    // Optional: Pause on hover
     slideshow.addEventListener("mouseenter", () => heroSlideshow.pause());
     slideshow.addEventListener("mouseleave", () => heroSlideshow.resume());
   }
 
-  // Initialize upload triggers
   const uploadTriggers = document.querySelectorAll("[data-upload-trigger]");
   uploadTriggers.forEach((trigger) => {
     trigger.addEventListener("click", (e) => {
@@ -62,13 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Document-level drag events
   document.addEventListener("dragenter", preventDefaults);
 
   document.addEventListener("dragleave", (e) => {
     preventDefaults(e);
 
-    // Check if we're actually leaving the document
     if (
       e.clientX <= 0 ||
       e.clientX >= window.innerWidth ||
@@ -79,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Upload area drag and drop
   uploadAreas.forEach((area) => {
     ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
       area.addEventListener(eventName, preventDefaults);
@@ -96,17 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
     area.addEventListener("drop", handleDrop);
   });
 
-  // Handle footer JavaScript
   updateCopyrightYear();
   initializeSocialLinks();
 });
 
-// Track drag state globally
 let dragCounter = 0;
 let currentDropTarget = null;
 let isProcessingDrag = false;
 
-// Drag and Drop handlers
 function preventDefaults(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -115,15 +101,13 @@ function preventDefaults(e) {
 function highlight(e) {
   preventDefaults(e);
 
-  if (isProcessingDrag) return; // Skip if we're already processing
+  if (isProcessingDrag) return;
 
   const uploadArea = e.currentTarget;
 
-  // Only handle if this is a new drag target or no current target
   if (!currentDropTarget || currentDropTarget !== uploadArea) {
     isProcessingDrag = true;
 
-    // Clean up any existing overlays first
     removeAllOverlays();
 
     currentDropTarget = uploadArea;
@@ -141,7 +125,6 @@ function highlight(e) {
     `;
     uploadArea.appendChild(overlay);
 
-    // Reset processing flag after a short delay
     setTimeout(() => {
       isProcessingDrag = false;
     }, 100);
@@ -151,17 +134,15 @@ function highlight(e) {
 function unhighlight(e) {
   preventDefaults(e);
 
-  if (isProcessingDrag) return; // Skip if we're already processing
+  if (isProcessingDrag) return;
 
   const uploadArea = e.currentTarget;
   const relatedTarget = e.relatedTarget;
 
-  // Check if we're actually leaving the upload area
   if (relatedTarget && uploadArea.contains(relatedTarget)) {
-    return; // Skip if moving to a child element
+    return;
   }
 
-  // Only unhighlight if this is our current drop target
   if (currentDropTarget === uploadArea) {
     isProcessingDrag = true;
     removeAllOverlays();
@@ -183,7 +164,6 @@ class Slideshow {
   }
 
   init() {
-    // Set first slide as active
     this.slides[0].classList.add("active");
     this.startSlideshow();
   }
@@ -193,13 +173,10 @@ class Slideshow {
   }
 
   nextSlide() {
-    // Remove active class from current slide
     this.slides[this.currentIndex].classList.remove("active");
 
-    // Update index
     this.currentIndex = (this.currentIndex + 1) % this.slides.length;
 
-    // Add active class to new slide
     this.slides[this.currentIndex].classList.add("active");
   }
 
@@ -213,11 +190,8 @@ class Slideshow {
 }
 
 function removeAllOverlays() {
-  // Reset state
   dragCounter = 0;
   currentDropTarget = null;
-
-  // Remove all active states and overlays
   document.querySelectorAll(".drag-active").forEach((element) => {
     element.classList.remove("drag-active");
   });
@@ -245,18 +219,15 @@ function handleDrop(e) {
   }
 }
 
-// Reset upload area
 function resetUploadArea(uploadId) {
   const container = document.getElementById(uploadId);
   if (!container) return;
 
-  // Get the elements
   const uploadArea = container.querySelector(".upload-area");
   const deleteBtn = container.querySelector(".upload-delete-btn");
   const uploadBtn = container.querySelector(".upload-btn");
   const fileInput = container.querySelector('input[type="file"]');
 
-  // Clear the upload area and restore initial content
   uploadArea.innerHTML = `
     <div class="upload-content">
       <span class="material-icons">cloud_upload</span>
@@ -265,26 +236,21 @@ function resetUploadArea(uploadId) {
     </div>
   `;
 
-  // Remove preview class
   uploadArea.classList.remove("has-preview");
 
-  // Hide upload button
   if (uploadBtn) {
     uploadBtn.style.display = "none";
   }
 
-  // Hide delete button
   if (deleteBtn) {
     deleteBtn.style.display = "none";
   }
 
-  // Clear file input
   if (fileInput) {
     fileInput.value = "";
   }
 }
 
-// Password visibility toggle
 function togglePasswordVisibility(fieldId) {
   const passwordField = document.getElementById(fieldId);
   const eyeIcon = passwordField.parentElement.querySelector(
@@ -300,7 +266,6 @@ function togglePasswordVisibility(fieldId) {
   }
 }
 
-// Notification System
 class NotificationManager {
   static DEFAULT_DURATION = 5000;
 
@@ -368,7 +333,6 @@ class NotificationManager {
 
 window.notify = NotificationManager;
 
-// Upload handler
 function handleFileSelect(input) {
   const file = input.files[0];
   if (!file) return;
@@ -388,7 +352,6 @@ function handleFileSelect(input) {
 
   const uploadContainer = input.closest(".upload-container");
   const uploadArea = uploadContainer.querySelector(".upload-area");
-  const uploadContent = uploadArea.querySelector(".upload-content");
 
   const reader = new FileReader();
   reader.onload = function (e) {
@@ -415,7 +378,6 @@ function handleFileSelect(input) {
   reader.readAsDataURL(file);
 }
 
-// Modal functions
 function showUpload(uploadId) {
   const overlay = document.querySelector(".upload-overlay");
   const container = document.getElementById(uploadId);
@@ -473,7 +435,6 @@ function hideDeleteModal(modalId) {
   }, 300);
 }
 
-// Avatar removal
 function removeAvatar() {
   fetch("/profile/avatar/remove", {
     method: "POST",
@@ -484,7 +445,6 @@ function removeAvatar() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Store notification data in sessionStorage
         sessionStorage.setItem(
           "notification",
           JSON.stringify({
@@ -492,11 +452,8 @@ function removeAvatar() {
             type: "success",
           })
         );
-
-        // Hide the modal
         hideDeleteModal("delete-avatar-modal");
 
-        // Reload the page
         location.reload();
       } else {
         notify.error(data.message);
@@ -507,8 +464,6 @@ function removeAvatar() {
       notify.error("Error removing avatar");
     });
 }
-
-// Gallery JavaScript
 
 let activeGalleryImage = null;
 
@@ -530,9 +485,7 @@ function expandGalleryImage(imageId, imageUrl, altText) {
   const previewContainer = document.getElementById("galleryPreview");
   const previewImage = document.getElementById("galleryPreviewImage");
   const galleryGrid = document.querySelector(".gallery-grid");
-  const downloadBtn = previewContainer.querySelector(".gallery-download-btn");
 
-  // Add loading class while image loads
   previewContainer.classList.add("gallery-preview-loading");
 
   previewImage.onload = function () {
@@ -562,7 +515,6 @@ function closeGalleryPreview() {
   activeGalleryImage = null;
   const galleryGrid = document.querySelector(".gallery-grid");
   const previewContainer = document.getElementById("galleryPreview");
-  const previewImage = document.getElementById("galleryPreviewImage");
   const activeItem = document.querySelector(".gallery-item-active");
 
   if (activeItem) {
@@ -574,56 +526,14 @@ function closeGalleryPreview() {
 }
 
 function downloadImage(imageId) {
-  fetch(`/gallery/${imageId}/download`, {
-    method: "GET",
-    credentials: "same-origin",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((data) => {
-          throw new Error(data.error || "Failed to get download URL");
-        });
-      }
-      return response.json();
-    })
-    .then(({ url, filename }) => {
-      return fetch(url, {
-        method: "GET",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Image fetch failed: ${response.status}`);
-          }
-          return response.blob();
-        })
-        .then((blob) => {
-          if (!blob) {
-            throw new Error("No blob data received");
-          }
-
-          const objectUrl = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.style.display = "none";
-          a.href = objectUrl;
-          a.download = filename || "picsforge-download";
-          document.body.appendChild(a);
-          a.click();
-
-          setTimeout(() => {
-            window.URL.revokeObjectURL(objectUrl);
-            a.remove();
-          }, 100);
-
-          notify.success("Downloading image...");
-        });
-    })
-    .catch((error) => {
-      console.error("Download error details:", error);
-      notify.error(`Failed to download image: ${error.message}`);
-    });
+  const link = document.createElement("a");
+  link.href = `/gallery/${imageId}/download`;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
-// Delete images from gallery
 function deleteImage(imageId) {
   fetch(`/gallery/${imageId}`, {
     method: "DELETE",
@@ -657,7 +567,6 @@ function deleteImage(imageId) {
     });
 }
 
-// Footer JavaScript
 function updateCopyrightYear() {
   const yearElement = document.getElementById("currentYear");
   if (yearElement) {

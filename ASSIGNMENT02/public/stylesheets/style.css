@@ -987,6 +987,7 @@ body {
   font-size: 1rem;
   color: #666;
   transition: all 0.3s;
+  color: #f5f5f5;
 }
 
 .tab-btn.active {
@@ -998,6 +999,8 @@ body {
 .profile-content {
   flex: 1;
   padding: 2rem;
+  background-color: #333333;
+  font-family: 'SF-Pro', sans-serif;
 }
 
 .tab-content {
@@ -1021,47 +1024,77 @@ body {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
+  color: #f5f5f5;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid #fe0000;
   border-radius: 4px;
+}
+
+.general-settings h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f5f5f5;
+  text-decoration: underline 3px solid #fe0000;
+}
+
+.update-username {
+  cursor: pointer;
+  border: none;
+  background-color: #fe0000;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 4rem;
+}
+
+.update-username:hover {
+  background-color: #aa0000;
 }
 
 .update-btn {
-  background: #007bff;
+  background: #fe0000;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
+  margin-bottom: 2rem;
 }
 
 .update-btn:hover {
-  background: #0056b3;
+  background: #aa0000;
 }
 
 .logout-btn {
-  background: #dc3545;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #fe0000;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
+  font-family: "SF-Pro", sans-serif;
+}
+
+.logout-btn .material-icons {
+  font-size: 1.2rem;
 }
 
 .logout-btn:hover {
-  background: #c82333;
+  background: #aa0000;
 }
 
 .profile-avatar-section {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
   padding: 1rem 0;
 }
 
@@ -1072,9 +1105,9 @@ body {
 }
 
 .profile-username {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  color: #333;
+  color: #f5f5f5;
 }
 
 .avatar {
@@ -1124,21 +1157,73 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: #dc3545;
+  background-color: #fe0000;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-family: "SF-Pro", sans-serif;
-  margin-top: 1rem;
 }
 
 .remove-avatar-btn:hover {
-  background-color: #c82333;
+  background-color: #aa0000;
 }
 
 .remove-avatar-btn .material-icons {
   font-size: 1.2rem;
+}
+
+.avatar-instruction {
+  font-size: 1rem;
+  color: #fbff02;
+  margin-top: 0.5rem;
+}
+
+.account-settings h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f5f5f5;
+  text-decoration: underline 3px solid #fe0000;
+}
+
+.account-settings {
+  margin-bottom: 3rem;
+}
+
+.unlink-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 0.3rem;
+  margin-right: 0.5rem;
+}
+
+.unlink-label {
+  color: #4bb543;
+  user-select: none;
+}
+
+.unlink-btn {
+  background: #fe0000;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 2rem;
+}
+
+.unlink-btn:hover {
+  background: #aa0000;
+}
+
+.security-settings h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f5f5f5;
+  text-decoration: underline 3px solid #fe0000;
 }
 
 /* Upload Box */
@@ -1688,7 +1773,7 @@ body {
   opacity: 0;
 }
 
-/* Editor Styles */
+/* Editor Page */
 .editor-page {
   min-height: 100vh;
   background: #202020;

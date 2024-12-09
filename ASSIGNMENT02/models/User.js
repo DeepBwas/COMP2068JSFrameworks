@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -31,8 +30,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  avatarKey: String,  // S3 key for the avatar
-  avatarUrl: String   // Full S3 URL for the avatar
+  avatarKey: String,
+  avatarUrl: String 
 });
 
 userSchema.virtual('galleryImages', {
@@ -41,7 +40,6 @@ userSchema.virtual('galleryImages', {
   foreignField: 'userId'
 });
 
-// Pre-save middleware to hash password
 userSchema.pre('save', async function(next) {
   try {
     if (!this.isModified('password') || !this.password) {
@@ -55,8 +53,11 @@ userSchema.pre('save', async function(next) {
   }
 });
 
+userSchema.methods.comparePassword = async function(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 userSchema.set('toJSON', { virtuals: true });
 userSchema.set('toObject', { virtuals: true });
 
-// Create model only if it doesn't exist
 module.exports = mongoose.models.User || mongoose.model('User', userSchema);

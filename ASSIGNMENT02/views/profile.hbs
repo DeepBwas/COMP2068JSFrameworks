@@ -23,7 +23,7 @@
   </div>
 
   <div class="profile-content">
-    <div class="tab-content active" id="general">
+    <div class="tab-content active general-settings" id="general">
       <h2>General Settings</h2>
 
       <div class="profile-avatar-section">
@@ -39,17 +39,23 @@
             </div>
           </div>
         </div>
+        <span class="profile-username">{{user.username}}</span>
         {{#if user.avatarUrl}}
           <button class="remove-avatar-btn" onclick="showDeleteModal('delete-avatar-modal')">
             <span class="material-icons">delete</span>
             Remove Avatar
           </button>
         {{/if}}
-        <span class="profile-username">{{user.username}}</span>
       </div>
 
+      {{#unless user.avatarUrl}}
+        <p class="avatar-instruction">
+          Looks like you don't have an avatar. Click on the avatar to upload one.
+        </p>
+      {{/unless}}
+
       <form
-        action="/profile/update/general"
+        action="/profile/update/username"
         method="POST"
         class="settings-form"
       >
@@ -63,22 +69,18 @@
             required
           />
         </div>
-        <div class="form-group">
-          <label for="bio">Bio</label>
-          <textarea id="bio" name="bio">{{user.bio}}</textarea>
-        </div>
-        <button type="submit" class="update-btn">Update General Settings</button>
+        <button type="submit" class="update-username">Update Username</button>
       </form>
       <button
         class="logout-btn"
         onclick="location.href='/auth/logout'"
-      >Logout</button>
+      >Logout <span class="material-icons">logout</span></button>
     </div>
 
-    <div class="tab-content" id="account">
+    <div class="tab-content account-settings" id="account">
       <h2>Account Settings</h2>
       <form
-        action="/profile/update/account"
+        action="/profile/update/email"
         method="POST"
         class="settings-form"
       >
@@ -94,39 +96,78 @@
         </div>
         <button type="submit" class="update-btn">Update Email</button>
       </form>
+      {{#if user.githubId}}
+        <form action="/profile/unlink/github" method="POST" class="unlink-form">
+          <div>
+            <img src="/images/github-dark.svg" alt="GitHub Logo" class="unlink-logo">
+            <span class="unlink-label">GitHub Linked</span>
+            <button type="submit" class="unlink-btn">Unlink from GitHub</button>
+          </div>
+        </form>
+      {{/if}}
+      {{#if user.googleId}}
+        <form action="/profile/unlink/google" method="POST" class="unlink-form">
+          <img src="/images/google.svg" alt="Google Logo" class="unlink-logo">
+          <span class="unlink-label">Google Linked</span>
+          <button type="submit" class="unlink-btn">Unlink from Google</button>
+        </form>
+      {{/if}}
     </div>
 
-    <div class="tab-content" id="security">
+    <div class="tab-content security-settings" id="security">
       <h2>Security Settings</h2>
-      <form
-        action="/profile/update/password"
-        method="POST"
-        class="settings-form"
-      >
-        <div class="form-group">
-          <label for="currentPassword">Current Password</label>
-          <input
-            type="password"
-            id="currentPassword"
-            name="currentPassword"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="newPassword">New Password</label>
-          <input type="password" id="newPassword" name="newPassword" required />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Confirm New Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            required
-          />
-        </div>
-        <button type="submit" class="update-btn">Update Password</button>
-      </form>
+      {{#if user.password}}
+        <form
+          action="/profile/update/password"
+          method="POST"
+          class="settings-form"
+        >
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+            />
+          </div>
+          <button type="submit" class="update-btn">Update Password</button>
+        </form>
+      {{else}}
+        <form
+          action="/profile/add/password"
+          method="POST"
+          class="settings-form"
+        >
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+            />
+          </div>
+          <button type="submit" class="update-btn">Add Password</button>
+        </form>
+      {{/if}}
     </div>
   </div>
 </div>

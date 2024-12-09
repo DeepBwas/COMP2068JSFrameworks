@@ -31,7 +31,7 @@ router.get("/:imageId/edit", isAuthenticated, async (req, res) => {
     processedImage.imageUrl = signedUrl;
 
     res.render("editor", {
-      title: "Edit Image",
+      title: "PicsForge - Editor",
       image: processedImage,
       active: { gallery: true },
       hideFooter: true

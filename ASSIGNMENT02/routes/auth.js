@@ -4,20 +4,17 @@ const User = require("../models/User");
 const UploadManager = require('../services/UploadManager');
 const router = express.Router();
 
-// Initialize avatar manager
 const avatarManager = new UploadManager({
   bucketName: process.env.AWS_BUCKET_NAME,
   region: process.env.AWS_REGION
 });
 
-// Authentication middleware with avatar refresh
 const isAuthenticated = async (req, res, next) => {
   if (!req.isAuthenticated()) {
     res.notify.error("Please login to access this page");
     return res.redirect("/login");
   }
 
-  // Refresh avatar URL if exists
   if (req.user && req.user.avatarKey) {
     try {
       const user = await User.findById(req.user.id);
@@ -31,12 +28,11 @@ const isAuthenticated = async (req, res, next) => {
   next();
 };
 
-// GET register page
+
 router.get("/register", (req, res) => {
   const notification = req.session.notification;
   const formData = req.session.formData;
 
-  // Clear session data after use
   delete req.session.notification;
   delete req.session.formData;
 
@@ -47,7 +43,7 @@ router.get("/register", (req, res) => {
   });
 });
 
-// POST register
+
 router.post("/register", async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
   req.session.formData = { username, email };
@@ -84,14 +80,12 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// GET login page
 router.get("/login", (req, res) => {
   const notification = req.session.notification;
   delete req.session.notification;
   res.render("login", { error: null, notification });
 });
 
-// POST login
 router.post("/login", (req, res, next) => {
   if (!req.body.email || !req.body.password) {
     res.notify.error("Email and password are required");
@@ -118,7 +112,6 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-// GET logout
 router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
@@ -131,7 +124,6 @@ router.get("/logout", (req, res) => {
   });
 });
 
-// Google OAuth routes
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -151,7 +143,6 @@ router.get(
   }
 );
 
-// GitHub OAuth routes
 router.get(
   "/github",
   passport.authenticate("github", {

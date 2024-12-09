@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let changesSaved = true;
 
-  // Store adjustments
   let adjustments = {
     brightness: 0,
     contrast: 0,
@@ -21,13 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
     sharpness: 0,
   };
 
-  // Add edit history tracking
   let editHistory = {
     adjustments: new Map(),
     filters: [],
     crops: 0,
 
-    // Add edit to history
     addAdjustment(type, value) {
       this.adjustments.set(type, value);
     },
@@ -44,11 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
       this.crops++;
     },
 
-    // Generate edit message
     generateMessage() {
       const parts = [];
 
-      // Add adjustments summary
       const adjustmentsList = [];
       this.adjustments.forEach((value, type) => {
         if (value !== 0) {
@@ -59,12 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
         parts.push(`Adjustments: ${adjustmentsList.join(", ")}`);
       }
 
-      // Add filters
       if (this.filters.length > 0) {
         parts.push(`Filters: ${[...new Set(this.filters)].join(", ")}`);
       }
 
-      // Add crops
       if (this.crops > 0) {
         parts.push(`Cropped ${this.crops} time${this.crops > 1 ? "s" : ""}`);
       }
@@ -72,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return parts.length > 0 ? parts.join("; ") : "Image edited";
     },
 
-    // Reset history
     reset() {
       this.adjustments.clear();
       this.filters = [];
@@ -80,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   };
 
-  // Initialize states
   let currentFilter = "none";
   let isProcessing = false;
   let caman = null;
@@ -88,15 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentAspectRatio = null;
   let cropBox = null;
 
-  // Hide canvas container initially
   canvasContainer.style.display = "none";
 
-  // Create crop container
   const cropContainer = document.createElement("div");
   cropContainer.className = "crop-container";
   cropContainer.style.display = "none";
 
-  // Initialize crop overlay HTML
   cropContainer.innerHTML = `
     <div class="crop-overlay">
         <div class="crop-box">
@@ -107,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     </div>
 `;
-  // Add crop styles
+
   const cropStyles = `
     .crop-container {
       position: absolute;
@@ -140,31 +128,24 @@ document.addEventListener("DOMContentLoaded", function () {
     .crop-handle.br { bottom: -10px; right: -10px; cursor: se-resize; }
   `;
 
-  // Add styles to document
   const styleSheet = document.createElement("style");
   styleSheet.textContent = cropStyles;
   document.head.appendChild(styleSheet);
 
-  // Load image first
   const img = new Image();
   img.crossOrigin = "anonymous";
   img.onload = function () {
-    // Set canvas dimensions
     editImage.width = this.naturalWidth;
     editImage.height = this.naturalHeight;
 
-    // Draw image
     const ctx = editImage.getContext("2d");
     ctx.drawImage(this, 0, 0);
 
-    // Hide loading indicator and show canvas
     loadingIndicator.style.display = "none";
     canvasContainer.style.display = "block";
 
-    // Add crop container to canvas container
     canvasContainer.appendChild(cropContainer);
 
-    // Initialize Caman after image is loaded
     caman = Caman("#editImage", function () {});
   };
 
@@ -175,30 +156,22 @@ document.addEventListener("DOMContentLoaded", function () {
     notify.error("Error loading image. Please try again.");
   };
 
-  // Get image URL from canvas data attribute
   const imageUrl = editImage.dataset.imageUrl;
   img.src = imageUrl;
 
-  // Cropping functionality
   function startCropping(aspectRatio) {
-    // Always clean up previous crop state first
     cleanupCrop();
 
     isCropping = true;
     cropContainer.style.display = "block";
     currentAspectRatio = aspectRatio === "0" ? null : parseFloat(aspectRatio);
-
-    // Get crop box reference
     cropBox = cropContainer.querySelector(".crop-box");
 
-    // Get exact canvas dimensions and position
     const canvasRect = editImage.getBoundingClientRect();
     const containerRect = canvasContainer.getBoundingClientRect();
 
-    // Calculate maximum available dimensions based on actual canvas
     let width, height;
 
-    // Calculate crop box size (80% of displayed canvas)
     if (aspectRatio === "original") {
       const imageRatio = editImage.width / editImage.height;
       width = Math.min(canvasRect.width * 0.8, canvasRect.width);
@@ -219,11 +192,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Calculate position to center the crop box on the canvas
     const left = (canvasRect.width - width) / 2;
     const top = (canvasRect.height - height) / 2;
 
-    // Position crop container exactly over the canvas
     cropContainer.style.width = canvasRect.width + "px";
     cropContainer.style.height = canvasRect.height + "px";
     cropContainer.style.left =
@@ -231,7 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
     cropContainer.style.top =
       (containerRect.height - canvasRect.height) / 2 + "px";
 
-    // Apply dimensions and position to crop box
     cropBox.style.width = `${width}px`;
     cropBox.style.height = `${height}px`;
     cropBox.style.left = `${left}px`;
@@ -275,7 +245,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const imageRect = editImage.getBoundingClientRect();
       const containerRect = canvasContainer.getBoundingClientRect();
 
-      // Calculate image bounds within container
       const imageBounds = {
         left: (containerRect.width - imageRect.width) / 2,
         top: (containerRect.height - imageRect.height) / 2,
@@ -284,14 +253,13 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       if (currentHandle) {
-        // Resizing logic
         let newWidth = startWidth;
         let newHeight = startHeight;
         let newLeft = startLeft;
         let newTop = startTop;
 
         switch (currentHandle.className.split(" ")[1]) {
-          case "br": // Bottom Right
+          case "br":
             newWidth = Math.max(
               50,
               Math.min(startWidth + deltaX, imageBounds.right - startLeft)
@@ -310,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             break;
 
-          case "bl": // Bottom Left
+          case "bl":
             newWidth = Math.max(
               50,
               Math.min(
@@ -334,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             break;
 
-          case "tr": // Top Right
+          case "tr":
             newWidth = Math.max(
               50,
               Math.min(startWidth + deltaX, imageBounds.right - startLeft)
@@ -359,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             break;
 
-          case "tl": // Top Left
+          case "tl":
             newWidth = Math.max(
               50,
               Math.min(
@@ -390,17 +358,14 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         }
 
-        // Apply the new dimensions and position
         cropBox.style.width = `${newWidth}px`;
         cropBox.style.height = `${newHeight}px`;
         cropBox.style.left = `${newLeft}px`;
         cropBox.style.top = `${newTop}px`;
       } else {
-        // Moving logic (unchanged)
         let newLeft = startLeft + deltaX;
         let newTop = startTop + deltaY;
 
-        // Constrain to image bounds
         newLeft = Math.max(
           imageBounds.left,
           Math.min(newLeft, imageBounds.right - cropBox.offsetWidth)
@@ -423,12 +388,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function applyCrop() {
     if (!isCropping || !cropBox) return;
-
-    // Get initial canvas and crop box dimensions
     let canvasRect = editImage.getBoundingClientRect();
     let boxRect = cropBox.getBoundingClientRect();
 
-    // Calculate crop dimensions
     const relativeX = boxRect.left - canvasRect.left;
     const relativeY = boxRect.top - canvasRect.top;
 
@@ -440,15 +402,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const cropWidth = Math.round(boxRect.width * scaleX);
     const cropHeight = Math.round(boxRect.height * scaleY);
 
-    // Apply the crop
     caman.crop(cropWidth, cropHeight, cropX, cropY);
 
     caman.render(() => {
-      // Update canvas dimensions after crop
       editImage.width = cropWidth;
       editImage.height = cropHeight;
 
-      // Draw the cropped image on the canvas
       const ctx = editImage.getContext("2d");
       ctx.clearRect(0, 0, editImage.width, editImage.height);
       ctx.drawImage(
@@ -463,25 +422,19 @@ document.addEventListener("DOMContentLoaded", function () {
         cropHeight
       );
 
-      // Force reflow by temporarily setting display to 'none' and back to 'block'
       editImage.style.display = "none";
       editImage.offsetHeight;
       editImage.style.display = "block";
 
-      // Clean up crop state properly
       cleanupCrop();
       cropBtns.forEach((btn) => btn.classList.remove("active"));
 
-      // Mark as cropped and update state
       hasBeenCropped = true;
       changesSaved = false;
       notify.success("Image cropped successfully");
       isProcessing = false;
 
-      // Reinitialize CamanJS with the updated canvas
-      caman = Caman("#editImage", function () {
-        // Additional callback if needed
-      });
+      caman = Caman("#editImage", function () {});
     });
   }
 
@@ -503,19 +456,16 @@ document.addEventListener("DOMContentLoaded", function () {
     cropBox = null;
   }
 
-  // Add crop button handlers
   const cropBtns = document.querySelectorAll(".crop-btn");
   cropBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       if (isProcessing || !caman) return;
 
-      // If crop is already active and same button is clicked, cancel crop
       if (isCropping && btn.classList.contains("active")) {
         cancelCrop();
         return;
       }
 
-      // Reset all buttons
       cropBtns.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
@@ -526,7 +476,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.applyCrop = applyCrop;
 
-  // Add crop action button handlers
   const cropApplyBtn = document.querySelector(".crop-apply-btn");
   const cropCancelBtn = document.querySelector(".crop-cancel-btn");
 
@@ -538,24 +487,19 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(cropApplyBtn, cropCancelBtn);
   }
 
-  // Option buttons click handlers
-  // Modify the option buttons click handler
   optionBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const option = btn.dataset.option;
       const targetSuboptions = document.getElementById(`${option}Options`);
       const wasActive = btn.classList.contains("active");
 
-      // Reset all buttons and suboptions
       optionBtns.forEach((b) => {
         b.classList.remove("active");
         const icon = b.querySelector(".material-icons");
         if (icon) icon.style.color = "white";
       });
       suboptions.forEach((sub) => sub.classList.remove("active"));
-      cancelCrop(); // Add this line to properly cancel crop mode
-
-      // Toggle clicked option if it wasn't active
+      cancelCrop();
       if (!wasActive) {
         btn.classList.add("active");
         const icon = btn.querySelector(".material-icons");
@@ -565,7 +509,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Adjustment sliders
   const sliders = document.querySelectorAll('input[type="range"]');
   sliders.forEach((slider) => {
     slider.addEventListener("input", (e) => {
@@ -575,15 +518,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const label = e.target.previousElementSibling;
       const adjustmentType = slider.dataset.adjust;
 
-      // Update label
       label.textContent = `${
         adjustmentType.charAt(0).toUpperCase() + adjustmentType.slice(1)
       }: ${value}`;
 
-      // Store adjustment value
       adjustments[adjustmentType] = value;
 
-      // Debounce the adjustment application
       clearTimeout(slider.timeout);
       slider.timeout = setTimeout(() => {
         applyAdjustments();
@@ -591,7 +531,6 @@ document.addEventListener("DOMContentLoaded", function () {
       editHistory.addAdjustment(adjustmentType, value);
     });
 
-    // Add double-click reset
     slider.addEventListener("dblclick", function () {
       if (isProcessing) return;
 
@@ -606,28 +545,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Function to apply adjustments
   function applyAdjustments() {
     if (isProcessing || !caman) return;
     isProcessing = true;
     changesSaved = false;
 
-    // Reset Caman
     caman.revert(false);
 
-    // Basic adjustments
     caman.brightness(adjustments.brightness);
     caman.contrast(adjustments.contrast);
     caman.saturation(adjustments.saturation);
 
-    // Brilliance (combination of contrast and vibrance)
     if (adjustments.brilliance !== 0) {
       const brillianceValue = adjustments.brilliance;
       caman.contrast(brillianceValue * 0.3);
       caman.vibrance(brillianceValue * 0.5);
     }
 
-    // Highlights and shadows
     if (adjustments.highlights !== 0) {
       const highlightValue = adjustments.highlights;
       caman.exposure(highlightValue * 0.5);
@@ -649,12 +583,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Sharpness
     if (adjustments.sharpness > 0) {
       caman.sharpen(adjustments.sharpness * 0.5);
     }
 
-    // Warmth (color temperature)
     if (adjustments.warmth !== 0) {
       const warmthValue = adjustments.warmth;
       if (warmthValue > 0) {
@@ -664,18 +596,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // If there's an active filter, reapply it
     if (currentFilter && currentFilter !== "none") {
       applyFilter(currentFilter, false);
     }
 
-    // Render changes
     caman.render(function () {
       isProcessing = false;
     });
   }
 
-  // Filter buttons
   const filterBtns = document.querySelectorAll(".filter-btn");
   filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -692,7 +621,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Function to apply filters
   function applyFilter(filterName, shouldRender = true) {
     if (isProcessing || !caman) return;
     isProcessing = true;
@@ -738,7 +666,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (shouldRender) {
-      // Reapply adjustments after filter
       Object.entries(adjustments).forEach(([type, value]) => {
         if (value !== 0) {
           switch (type) {
@@ -776,14 +703,14 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         "image/jpeg",
         0.92
-      ); // Reduced quality from 0.92 to 0.85
+      );
     });
   }
 
   const backBtn = document.querySelector(".editor-back-btn");
 
   backBtn.addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent default navigation first
+    e.preventDefault();
 
     if (hasUnsavedChanges()) {
       console.log("Unsaved changes detected");
@@ -831,7 +758,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await response.json();
       notify.success("Image saved successfully");
-      changesSaved = true; // Set changes as saved
+      changesSaved = true;
     } catch (error) {
       console.error("Save error:", error);
       notify.error(error.message || "Error saving image");
@@ -863,14 +790,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.addEventListener("beforeunload", handleBeforeUnload);
 
-  // Initialize tooltips
   const tooltipElements = document.querySelectorAll("[data-tooltip]");
   tooltipElements.forEach((element) => {
     const tooltipText = element.dataset.tooltip;
     element.title = tooltipText;
   });
 
-  // Handle page unload
   function handleBeforeUnload(e) {
     if (hasUnsavedChanges()) {
       e.preventDefault();
@@ -888,10 +813,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Cancel any active cropping
     cancelCrop();
 
-    // Reset all adjustments
     adjustments = {
       brightness: 0,
       contrast: 0,
@@ -903,7 +826,6 @@ document.addEventListener("DOMContentLoaded", function () {
       sharpness: 0,
     };
 
-    // Reset all sliders and labels
     document.querySelectorAll('input[type="range"]').forEach((slider) => {
       slider.value = 0;
       const label = slider.previousElementSibling;
@@ -913,7 +835,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }: 0`;
     });
 
-    // Reset filter buttons
     document.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.classList.remove("active");
     });
@@ -922,13 +843,10 @@ document.addEventListener("DOMContentLoaded", function () {
       .classList.add("active");
     currentFilter = "none";
 
-    // Reset edit history
     editHistory.reset();
 
-    // Reset the image
     isProcessing = true;
 
-    // Load original image again
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = function () {
@@ -938,13 +856,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(this, 0, 0);
 
-      // Destroy previous Caman instance
       if (caman) {
         caman.reset();
         caman = null;
       }
 
-      // Reinitialize Caman
       caman = Caman("#editImage", function () {
         isProcessing = false;
         changesSaved = true;
@@ -954,7 +870,6 @@ document.addEventListener("DOMContentLoaded", function () {
     img.src = editImage.dataset.imageUrl;
   }
 
-  // Add reset button handler
   resetBtn.addEventListener("click", () => {
     if (isProcessing) {
       notify.info("Please wait while processing");
@@ -968,7 +883,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Add keyboard shortcut for reset (Ctrl+R)
   document.addEventListener("keydown", function (e) {
     if (e.key === "r" && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();

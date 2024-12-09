@@ -1,5 +1,4 @@
 <div class="gallery-page">
-  {{!-- Upload Modal --}}
   {{> upload 
     uploadId="gallery-upload"
     fileInputId="gallery-input"
@@ -9,7 +8,6 @@
     action="/gallery/upload"
   }}
 
-  {{!-- Delete Confirmation Modal --}}
   {{> delete 
     modalId="gallery-delete-modal"
     title="Delete Image"
@@ -18,7 +16,6 @@
   }}
 
   <div class="gallery-container">
-    {{!-- Gallery Header --}}
     <div class="gallery-header">
       <h1 class="gallery-title">My Gallery</h1>
       <button class="gallery-upload-btn" data-upload-trigger="gallery-upload">
@@ -27,7 +24,6 @@
       </button>
     </div>
 
-    {{!-- Gallery Content --}}
     <div class="gallery-content">
       {{#if images.length}}
         <div class="gallery-grid">

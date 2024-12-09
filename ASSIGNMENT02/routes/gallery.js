@@ -4,7 +4,6 @@ const isAuthenticated = require("../routes/auth");
 const GalleryImage = require("../models/GalleryImage");
 const UploadManager = require("../services/UploadManager");
 
-// Create gallery manager
 const galleryManager = new UploadManager({
   allowedMimes: ["image/jpeg", "image/png"],
   maxSize: 12 * 1024 * 1024,
@@ -14,12 +13,10 @@ const galleryManager = new UploadManager({
   uploadPath: "gallery",
 });
 
-// Get gallery page
 router.get("/gallery", isAuthenticated, async (req, res) => {
   try {
     let images = await GalleryImage.find({ userId: req.user.id });
 
-    // Process each image
     const processedImages = await Promise.all(
       images.map(async (image) => {
         try {
@@ -34,7 +31,6 @@ router.get("/gallery", isAuthenticated, async (req, res) => {
       })
     );
 
-    // Filter out any null values and sort by upload date
     const finalImages = processedImages
       .filter((img) => img !== null)
       .sort((a, b) => b.uploadDate - a.uploadDate);
@@ -51,7 +47,6 @@ router.get("/gallery", isAuthenticated, async (req, res) => {
   }
 });
 
-// Upload gallery image
 router.post(
   "/gallery/upload",
   isAuthenticated,
@@ -82,35 +77,31 @@ router.post(
   }
 );
 
-// Download gallery image
 router.get("/gallery/:imageId/download", isAuthenticated, async (req, res) => {
   try {
     const image = await GalleryImage.findById(req.params.imageId);
     if (!image) {
-      return res.status(404).json({ 
-        error: "Image not found" 
-      });
+      return res.status(404).send("Image not found");
     }
 
     const signedUrl = await galleryManager.getSignedUrl(image.imageKey);
     
-    // Return JSON with URL and filename instead of redirecting
-    res.json({
-      url: signedUrl,
-      filename: image.originalName
-    });
+    const response = await fetch(signedUrl);
+    const buffer = await response.arrayBuffer();
+
+    res.setHeader('Content-Disposition', `attachment; filename="${image.originalName}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    
+    res.send(Buffer.from(buffer));
+
   } catch (error) {
     console.error("Download error:", error);
-    res.status(500).json({ 
-      error: "Error generating download URL" 
-    });
+    res.status(500).send("Error downloading file");
   }
 });
 
-// Delete gallery image
 router.delete("/gallery/:imageId", isAuthenticated, async (req, res) => {
   try {
-    // Find and verify image ownership
     const image = await GalleryImage.findById(req.params.imageId);
     if (!image) {
       return res.status(404).json({ error: "Image not found" });
@@ -120,10 +111,8 @@ router.delete("/gallery/:imageId", isAuthenticated, async (req, res) => {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
-    // Delete from S3
     await galleryManager.deleteFile(image.imageKey);
 
-    // Delete from database
     await GalleryImage.deleteOne({ _id: req.params.imageId });
 
     return res.json({
@@ -139,7 +128,6 @@ router.delete("/gallery/:imageId", isAuthenticated, async (req, res) => {
   }
 });
 
-// Get editor page for image
 router.get("editor/:imageId/edit", isAuthenticated, async (req, res) => {
     try {
         const image = await GalleryImage.findById(req.params.imageId);
@@ -153,12 +141,10 @@ router.get("editor/:imageId/edit", isAuthenticated, async (req, res) => {
             return res.redirect("/gallery");
         }
 
-        // Get signed URL for image
         const signedUrl = await editorManager.getSignedUrl(image.imageKey);
         const processedImage = image.toObject();
         processedImage.imageUrl = signedUrl;
 
-        // Add cache control headers
         res.set({
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',

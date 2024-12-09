@@ -5,7 +5,6 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
 module.exports = function (passport) {
-  // Local Strategy
   passport.use(
     new LocalStrategy(
       {
@@ -31,7 +30,6 @@ module.exports = function (passport) {
     )
   );
 
-  // Google Strategy
   passport.use(
     new GoogleStrategy(
       {
@@ -65,7 +63,6 @@ module.exports = function (passport) {
     )
   );
 
-  // GitHub Strategy
   passport.use(
     new GitHubStrategy(
       {

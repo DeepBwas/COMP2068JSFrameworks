@@ -3,9 +3,7 @@ const router = express.Router();
 const isAuthenticated = require("../routes/auth");
 const User = require("../models/User");
 const UploadManager = require("../services/UploadManager");
-const sharp = require("sharp");
 
-// Create avatar manager
 const avatarManager = new UploadManager({
   allowedMimes: ["image/jpeg", "image/png"],
   maxSize: 12 * 1024 * 1024, // 12MB
@@ -13,12 +11,10 @@ const avatarManager = new UploadManager({
   region: process.env.AWS_REGION,
 });
 
-// Render profile page
 router.get("/profile", isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    // Refresh the signed URL if user has an avatar
     if (user.avatarKey) {
       user.avatarUrl = await avatarManager.getSignedUrl(user.avatarKey);
       await user.save();
@@ -36,44 +32,7 @@ router.get("/profile", isAuthenticated, async (req, res) => {
   }
 });
 
-// Update profile
-router.post("/profile/update", isAuthenticated, async (req, res) => {
-  try {
-    const { username, email, bio } = req.body;
-
-    if (!username || !email) {
-      res.notify.error("Username and email are required");
-      return res.redirect("/profile");
-    }
-
-    // Check if username or email already exists
-    const existingUser = await User.findOne({
-      _id: { $ne: req.user.id },
-      $or: [{ email }, { username }],
-    });
-
-    if (existingUser) {
-      res.notify.error("Username or email already exists");
-      return res.redirect("/profile");
-    }
-
-    await User.findByIdAndUpdate(req.user.id, {
-      username,
-      email,
-      bio,
-    });
-
-    res.notify.success("Profile updated successfully");
-    res.redirect("/profile");
-  } catch (error) {
-    console.error("Profile update error:", error);
-    res.notify.error("Error updating profile");
-    res.redirect("/profile");
-  }
-});
-
-// Update account settings
-router.post("/profile/update/account", isAuthenticated, async (req, res) => {
+router.post("/profile/update/email", isAuthenticated, async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -82,7 +41,6 @@ router.post("/profile/update/account", isAuthenticated, async (req, res) => {
       return res.redirect("/profile");
     }
 
-    // Check if email already exists
     const existingUser = await User.findOne({
       _id: { $ne: req.user.id },
       email,
@@ -93,17 +51,126 @@ router.post("/profile/update/account", isAuthenticated, async (req, res) => {
       return res.redirect("/profile");
     }
 
-    await User.findByIdAndUpdate(req.user.id, { email });
+    await User.findByIdAndUpdate(req.user.id, {
+      email,
+    });
+
     res.notify.success("Email updated successfully");
     res.redirect("/profile");
   } catch (error) {
-    console.error("Account update error:", error);
+    console.error("Email update error:", error);
     res.notify.error("Error updating email");
     res.redirect("/profile");
   }
 });
 
-// Update password
+router.post("/profile/update/username", isAuthenticated, async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (!username) {
+      res.notify.error("Username is required");
+      return res.redirect("/profile");
+    }
+
+    const existingUser = await User.findOne({
+      _id: { $ne: req.user.id },
+      username,
+    });
+
+    if (existingUser) {
+      res.notify.error("Username already exists");
+      return res.redirect("/profile");
+    }
+
+    await User.findByIdAndUpdate(req.user.id, {
+      username,
+    });
+
+    res.notify.success("Username updated successfully");
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Username update error:", error);
+    res.notify.error("Error updating username");
+    res.redirect("/profile");
+  }
+});
+
+router.post("/profile/unlink/github", isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user.password && !user.googleId) {
+      res.notify.error(
+        "Please set a password before unlinking your GitHub account."
+      );
+      return res.redirect("/profile");
+    }
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $unset: { githubId: 1 },
+    });
+
+    res.notify.success("Unlinked from GitHub successfully");
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("GitHub unlink error:", error);
+    res.notify.error("Error unlinking from GitHub");
+    res.redirect("/profile");
+  }
+});
+
+router.post("/profile/unlink/google", isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user.password && !user.githubId) {
+      res.notify.error(
+        "Please set a password before unlinking your Google account."
+      );
+      return res.redirect("/profile");
+    }
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $unset: { googleId: 1 },
+    });
+
+    res.notify.success("Unlinked from Google successfully");
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Google unlink error:", error);
+    res.notify.error("Error unlinking from Google");
+    res.redirect("/profile");
+  }
+});
+
+router.post("/profile/add/password", isAuthenticated, async (req, res) => {
+  try {
+    const { newPassword, confirmPassword } = req.body;
+
+    if (!newPassword || !confirmPassword) {
+      res.notify.error("All password fields are required");
+      return res.redirect("/profile");
+    }
+
+    if (newPassword !== confirmPassword) {
+      res.notify.error("New passwords do not match");
+      return res.redirect("/profile");
+    }
+
+    const user = await User.findById(req.user.id);
+    user.password = newPassword;
+    await user.save();
+
+    res.notify.success("Password added successfully");
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Add password error:", error);
+    res.notify.error("Error adding password");
+    res.redirect("/profile");
+  }
+});
+
 router.post("/profile/update/password", isAuthenticated, async (req, res) => {
   try {
     const { currentPassword, newPassword, confirmPassword } = req.body;
@@ -119,8 +186,8 @@ router.post("/profile/update/password", isAuthenticated, async (req, res) => {
     }
 
     const user = await User.findById(req.user.id);
-    const isMatch = await user.comparePassword(currentPassword);
 
+    const isMatch = await user.comparePassword(currentPassword);
     if (!isMatch) {
       res.notify.error("Current password is incorrect");
       return res.redirect("/profile");
@@ -132,14 +199,11 @@ router.post("/profile/update/password", isAuthenticated, async (req, res) => {
     res.notify.success("Password updated successfully");
     res.redirect("/profile");
   } catch (error) {
-    console.error("Password update error:", error);
+    console.error("Update password error:", error);
     res.notify.error("Error updating password");
     res.redirect("/profile");
   }
 });
-
-// Upload avatar
-// In profile.js, modify the avatar upload route:
 
 router.post(
   "/profile/avatar/upload",
@@ -151,11 +215,8 @@ router.post(
         res.notify.error("No file uploaded");
         return res.redirect("/profile");
       }
-
-      // Get current user
       const user = await User.findById(req.user.id);
 
-      // Delete old avatar if exists
       if (user.avatarKey) {
         try {
           await avatarManager.deleteFile(user.avatarKey);
@@ -164,10 +225,8 @@ router.post(
         }
       }
 
-      // Get a signed URL for immediate use
       const signedUrl = await avatarManager.getSignedUrl(req.file.key);
 
-      // Update user with new avatar info
       await User.findByIdAndUpdate(req.user.id, {
         avatarKey: req.file.key,
         avatarUrl: signedUrl,
@@ -183,7 +242,6 @@ router.post(
   }
 );
 
-// Delete avatar
 router.post("/profile/avatar/remove", isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
