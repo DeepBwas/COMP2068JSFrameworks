@@ -54,15 +54,18 @@ app.use(express.static(path.join(__dirname, "public")));
 require("./config/passport")(passport);
 app.use(
   session({
-    secret: "SESSION_SECRET",
-    resave: true,
-    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === "production",
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: 'lax'
+    }
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
