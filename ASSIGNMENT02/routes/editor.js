@@ -3,9 +3,7 @@ const router = express.Router();
 const isAuthenticated = require("../routes/auth");
 const GalleryImage = require("../models/GalleryImage");
 const UploadManager = require("../services/UploadManager");
-const crypto = require('crypto');
 
-// Create editor manager with same config as gallery
 const editorManager = new UploadManager({
     allowedMimes: ["image/jpeg", "image/png", "image/jpg"],
     maxSize: 12 * 1024 * 1024,
@@ -15,10 +13,8 @@ const editorManager = new UploadManager({
     uploadPath: "gallery",
 });
 
-// Get editor page with specific image
 router.get("/:imageId/edit", isAuthenticated, async (req, res) => {
   try {
-    // Find and verify image ownership
     const image = await GalleryImage.findById(req.params.imageId);
     if (!image) {
       res.notify.error("Image not found");
@@ -30,7 +26,6 @@ router.get("/:imageId/edit", isAuthenticated, async (req, res) => {
       return res.redirect("/gallery");
     }
 
-    // Get signed URL for image
     const signedUrl = await editorManager.getSignedUrl(image.imageKey);
     const processedImage = image.toObject();
     processedImage.imageUrl = signedUrl;
@@ -48,17 +43,6 @@ router.get("/:imageId/edit", isAuthenticated, async (req, res) => {
   }
 });
 
-const validatePayloadSize = (req, res, next) => {
-    const contentLength = parseInt(req.headers['content-length'], 10);
-    if (contentLength > 50 * 1024 * 1024) { // 50MB limit
-        return res.status(413).json({
-            error: "Payload too large. Please reduce the image size."
-        });
-    }
-    next();
-};
-
-// Modified save route
 router.post("/:imageId/save", 
     isAuthenticated,
     editorManager.getUploader().single('image'),
@@ -68,7 +52,6 @@ router.post("/:imageId/save",
                 return res.status(400).json({ error: "No image data provided" });
             }
 
-            // Find and validate image
             const image = await GalleryImage.findById(req.params.imageId);
             if (!image) {
                 return res.status(404).json({ error: "Image not found" });
@@ -78,7 +61,6 @@ router.post("/:imageId/save",
             }
 
             try {
-                // Delete the old file and update with new one
                 if (image.imageKey) {
                     await editorManager.deleteFile(image.imageKey).catch(console.error);
                 }

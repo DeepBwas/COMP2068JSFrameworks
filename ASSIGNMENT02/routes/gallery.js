@@ -40,7 +40,7 @@ router.get("/gallery", isAuthenticated, async (req, res) => {
       .sort((a, b) => b.uploadDate - a.uploadDate);
 
     res.render("gallery", {
-      title: "My Gallery",
+      title: "PicsForge - Gallery",
       images: finalImages,
       active: { gallery: true },
     });

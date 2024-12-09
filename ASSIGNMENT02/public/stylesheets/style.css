@@ -1805,26 +1805,25 @@ body {
 
 .canvas-container {
   position: relative;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
+  background: #1a1a1a;
 }
 
 .crop-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   pointer-events: none;
+  width: 100%;
+  height: 100%;
 }
 
 .crop-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -1896,7 +1895,8 @@ body {
   margin: 0;
 }
 
-.crop-apply-btn:hover, .crop-cancel-btn:hover {
+.crop-apply-btn:hover,
+.crop-cancel-btn:hover {
   background-color: #aa0000;
 }
 

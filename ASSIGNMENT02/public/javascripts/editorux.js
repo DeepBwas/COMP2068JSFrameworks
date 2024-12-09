@@ -1,3 +1,4 @@
+let hasBeenCropped = false;
 document.addEventListener("DOMContentLoaded", function () {
   const imageId = window.location.pathname.split("/")[2];
   const editImage = document.getElementById("editImage");
@@ -97,16 +98,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize crop overlay HTML
   cropContainer.innerHTML = `
-        <div class="crop-overlay">
-      <div class="crop-box">
-        <div class="crop-handle tl"></div>
-        <div class="crop-handle tr"></div>
-        <div class="crop-handle bl"></div>
-        <div class="crop-handle br"></div>
-      </div>
+    <div class="crop-overlay">
+        <div class="crop-box">
+            <div class="crop-handle tl"></div>
+            <div class="crop-handle tr"></div>
+            <div class="crop-handle bl"></div>
+            <div class="crop-handle br"></div>
+        </div>
     </div>
-    `;
-
+`;
   // Add crop styles
   const cropStyles = `
     .crop-container {
@@ -165,9 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     canvasContainer.appendChild(cropContainer);
 
     // Initialize Caman after image is loaded
-    caman = Caman("#editImage", function () {
-      notify.success("Image ready for editing");
-    });
+    caman = Caman("#editImage", function () {});
   };
 
   img.onerror = function (error) {
@@ -183,6 +181,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Cropping functionality
   function startCropping(aspectRatio) {
+    // Always clean up previous crop state first
+    cleanupCrop();
+
     isCropping = true;
     cropContainer.style.display = "block";
     currentAspectRatio = aspectRatio === "0" ? null : parseFloat(aspectRatio);
@@ -190,44 +191,47 @@ document.addEventListener("DOMContentLoaded", function () {
     // Get crop box reference
     cropBox = cropContainer.querySelector(".crop-box");
 
-    // Get the actual image dimensions and position
-    const imageRect = editImage.getBoundingClientRect();
+    // Get exact canvas dimensions and position
+    const canvasRect = editImage.getBoundingClientRect();
     const containerRect = canvasContainer.getBoundingClientRect();
 
-    // Calculate the offset of the image within the container
-    const imageOffset = {
-      left: (containerRect.width - imageRect.width) / 2,
-      top: (containerRect.height - imageRect.height) / 2,
-    };
-
+    // Calculate maximum available dimensions based on actual canvas
     let width, height;
 
+    // Calculate crop box size (80% of displayed canvas)
     if (aspectRatio === "original") {
-      const imageAspectRatio = editImage.width / editImage.height;
-      width = Math.min(imageRect.width * 0.8, imageRect.width);
-      height = width / imageAspectRatio;
+      const imageRatio = editImage.width / editImage.height;
+      width = Math.min(canvasRect.width * 0.8, canvasRect.width);
+      height = width / imageRatio;
     } else if (aspectRatio === "1") {
-      // Square
-      width = Math.min(imageRect.width, imageRect.height) * 0.8;
+      width = Math.min(canvasRect.width, canvasRect.height) * 0.8;
       height = width;
+    } else if (aspectRatio === "0") {
+      width = canvasRect.width * 0.8;
+      height = canvasRect.height * 0.8;
     } else {
-      width = imageRect.width * 0.8;
-      height = currentAspectRatio ? width / currentAspectRatio : width * 0.8;
+      width = canvasRect.width * 0.8;
+      height = width / parseFloat(aspectRatio);
 
-      // Adjust if height exceeds image bounds
-      if (height > imageRect.height * 0.8) {
-        height = imageRect.height * 0.8;
-        width = currentAspectRatio
-          ? height * currentAspectRatio
-          : imageRect.width * 0.8;
+      if (height > canvasRect.height * 0.8) {
+        height = canvasRect.height * 0.8;
+        width = height * parseFloat(aspectRatio);
       }
     }
 
-    // Position crop box centered on image
-    const left = imageOffset.left + (imageRect.width - width) / 2;
-    const top = imageOffset.top + (imageRect.height - height) / 2;
+    // Calculate position to center the crop box on the canvas
+    const left = (canvasRect.width - width) / 2;
+    const top = (canvasRect.height - height) / 2;
 
-    // Apply dimensions and position
+    // Position crop container exactly over the canvas
+    cropContainer.style.width = canvasRect.width + "px";
+    cropContainer.style.height = canvasRect.height + "px";
+    cropContainer.style.left =
+      (containerRect.width - canvasRect.width) / 2 + "px";
+    cropContainer.style.top =
+      (containerRect.height - canvasRect.height) / 2 + "px";
+
+    // Apply dimensions and position to crop box
     cropBox.style.width = `${width}px`;
     cropBox.style.height = `${height}px`;
     cropBox.style.left = `${left}px`;
@@ -263,7 +267,6 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
     });
 
-    // Handle dragging
     document.addEventListener("mousemove", function (e) {
       if (!isDragging) return;
 
@@ -287,33 +290,113 @@ document.addEventListener("DOMContentLoaded", function () {
         let newLeft = startLeft;
         let newTop = startTop;
 
-        if (currentHandle.classList.contains("br")) {
-          newWidth = Math.max(
-            50,
-            Math.min(startWidth + deltaX, imageBounds.right - startLeft)
-          );
-          if (currentAspectRatio) {
-            newHeight = newWidth / currentAspectRatio;
-            // Adjust width if height exceeds bounds
-            if (newHeight > imageBounds.bottom - startTop) {
-              newHeight = imageBounds.bottom - startTop;
-              newWidth = newHeight * currentAspectRatio;
-            }
-          } else {
-            newHeight = Math.max(
+        switch (currentHandle.className.split(" ")[1]) {
+          case "br": // Bottom Right
+            newWidth = Math.max(
               50,
-              Math.min(startHeight + deltaY, imageBounds.bottom - startTop)
+              Math.min(startWidth + deltaX, imageBounds.right - startLeft)
             );
-          }
-        }
-        // Add similar logic for other handles...
+            if (currentAspectRatio) {
+              newHeight = newWidth / currentAspectRatio;
+              if (newHeight > imageBounds.bottom - startTop) {
+                newHeight = imageBounds.bottom - startTop;
+                newWidth = newHeight * currentAspectRatio;
+              }
+            } else {
+              newHeight = Math.max(
+                50,
+                Math.min(startHeight + deltaY, imageBounds.bottom - startTop)
+              );
+            }
+            break;
 
+          case "bl": // Bottom Left
+            newWidth = Math.max(
+              50,
+              Math.min(
+                startWidth - deltaX,
+                startLeft + startWidth - imageBounds.left
+              )
+            );
+            newLeft = startLeft + startWidth - newWidth;
+            if (currentAspectRatio) {
+              newHeight = newWidth / currentAspectRatio;
+              if (newHeight > imageBounds.bottom - startTop) {
+                newHeight = imageBounds.bottom - startTop;
+                newWidth = newHeight * currentAspectRatio;
+                newLeft = startLeft + startWidth - newWidth;
+              }
+            } else {
+              newHeight = Math.max(
+                50,
+                Math.min(startHeight + deltaY, imageBounds.bottom - startTop)
+              );
+            }
+            break;
+
+          case "tr": // Top Right
+            newWidth = Math.max(
+              50,
+              Math.min(startWidth + deltaX, imageBounds.right - startLeft)
+            );
+            if (currentAspectRatio) {
+              newHeight = newWidth / currentAspectRatio;
+              newTop = startTop + startHeight - newHeight;
+              if (newTop < imageBounds.top) {
+                newTop = imageBounds.top;
+                newHeight = startTop + startHeight - imageBounds.top;
+                newWidth = newHeight * currentAspectRatio;
+              }
+            } else {
+              newHeight = Math.max(
+                50,
+                Math.min(
+                  startHeight - deltaY,
+                  startTop + startHeight - imageBounds.top
+                )
+              );
+              newTop = startTop + startHeight - newHeight;
+            }
+            break;
+
+          case "tl": // Top Left
+            newWidth = Math.max(
+              50,
+              Math.min(
+                startWidth - deltaX,
+                startLeft + startWidth - imageBounds.left
+              )
+            );
+            newLeft = startLeft + startWidth - newWidth;
+            if (currentAspectRatio) {
+              newHeight = newWidth / currentAspectRatio;
+              newTop = startTop + startHeight - newHeight;
+              if (newTop < imageBounds.top) {
+                newTop = imageBounds.top;
+                newHeight = startTop + startHeight - imageBounds.top;
+                newWidth = newHeight * currentAspectRatio;
+                newLeft = startLeft + startWidth - newWidth;
+              }
+            } else {
+              newHeight = Math.max(
+                50,
+                Math.min(
+                  startHeight - deltaY,
+                  startTop + startHeight - imageBounds.top
+                )
+              );
+              newTop = startTop + startHeight - newHeight;
+            }
+            break;
+        }
+
+        // Apply the new dimensions and position
         cropBox.style.width = `${newWidth}px`;
         cropBox.style.height = `${newHeight}px`;
         cropBox.style.left = `${newLeft}px`;
         cropBox.style.top = `${newTop}px`;
       } else {
-        // Moving logic
+        // Moving logic (unchanged)
         let newLeft = startLeft + deltaX;
         let newTop = startTop + deltaY;
 
@@ -341,57 +424,83 @@ document.addEventListener("DOMContentLoaded", function () {
   function applyCrop() {
     if (!isCropping || !cropBox) return;
 
-    console.log("--- Starting Crop Operation ---");
-    changesSaved = false;
+    // Get initial canvas and crop box dimensions
+    let canvasRect = editImage.getBoundingClientRect();
+    let boxRect = cropBox.getBoundingClientRect();
 
-    // Get rectangles
-    const imageRect = editImage.getBoundingClientRect();
-    const boxRect = cropBox.getBoundingClientRect();
+    // Calculate crop dimensions
+    const relativeX = boxRect.left - canvasRect.left;
+    const relativeY = boxRect.top - canvasRect.top;
 
-    // Calculate relative position of crop box to image
-    const relativeX = boxRect.left - imageRect.left;
-    const relativeY = boxRect.top - imageRect.top;
+    const scaleX = editImage.width / canvasRect.width;
+    const scaleY = editImage.height / canvasRect.height;
 
-    // Calculate scale factor between displayed size and actual canvas size
-    const scaleX = editImage.width / imageRect.width;
-    const scaleY = editImage.height / imageRect.height;
-
-    // Convert screen coordinates to canvas coordinates
     const cropX = Math.round(relativeX * scaleX);
     const cropY = Math.round(relativeY * scaleY);
     const cropWidth = Math.round(boxRect.width * scaleX);
     const cropHeight = Math.round(boxRect.height * scaleY);
 
-    console.log("Crop dimensions:", {
-      x: cropX,
-      y: cropY,
-      width: cropWidth,
-      height: cropHeight,
-    });
-
-    // Use Caman's crop function
+    // Apply the crop
     caman.crop(cropWidth, cropHeight, cropX, cropY);
 
-    // Render the changes
     caman.render(() => {
-      isCropping = false;
-      cropContainer.style.display = "none";
-      editHistory.addCrop();
-      notify.success("Image cropped successfully");
-    });
+      // Update canvas dimensions after crop
+      editImage.width = cropWidth;
+      editImage.height = cropHeight;
 
-    // Reset crop buttons
-    document.querySelectorAll(".crop-btn").forEach((btn) => {
-      btn.classList.remove("active");
+      // Draw the cropped image on the canvas
+      const ctx = editImage.getContext("2d");
+      ctx.clearRect(0, 0, editImage.width, editImage.height);
+      ctx.drawImage(
+        editImage,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        0,
+        0,
+        cropWidth,
+        cropHeight
+      );
+
+      // Force reflow by temporarily setting display to 'none' and back to 'block'
+      editImage.style.display = "none";
+      editImage.offsetHeight;
+      editImage.style.display = "block";
+
+      // Clean up crop state properly
+      cleanupCrop();
+      cropBtns.forEach((btn) => btn.classList.remove("active"));
+
+      // Mark as cropped and update state
+      hasBeenCropped = true;
+      changesSaved = false;
+      notify.success("Image cropped successfully");
+      isProcessing = false;
+
+      // Reinitialize CamanJS with the updated canvas
+      caman = Caman("#editImage", function () {
+        // Additional callback if needed
+      });
     });
-    document.querySelector('[data-ratio="original"]').classList.add("active");
   }
 
   function cancelCrop() {
+    cleanupCrop();
+    cropBtns.forEach((btn) => btn.classList.remove("active"));
+  }
+
+  function cleanupCrop() {
     isCropping = false;
     currentAspectRatio = null;
     cropContainer.style.display = "none";
-    cropBtns.forEach((b) => b.classList.remove("active"));
+    if (cropBox) {
+      cropBox.style.width = "0px";
+      cropBox.style.height = "0px";
+      cropBox.style.left = "0px";
+      cropBox.style.top = "0px";
+    }
+    cropBox = null;
   }
 
   // Add crop button handlers
@@ -400,6 +509,13 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.addEventListener("click", () => {
       if (isProcessing || !caman) return;
 
+      // If crop is already active and same button is clicked, cancel crop
+      if (isCropping && btn.classList.contains("active")) {
+        cancelCrop();
+        return;
+      }
+
+      // Reset all buttons
       cropBtns.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
@@ -423,6 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Option buttons click handlers
+  // Modify the option buttons click handler
   optionBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const option = btn.dataset.option;
@@ -436,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (icon) icon.style.color = "white";
       });
       suboptions.forEach((sub) => sub.classList.remove("active"));
-      cancelCrop();
+      cancelCrop(); // Add this line to properly cancel crop mode
 
       // Toggle clicked option if it wasn't active
       if (!wasActive) {
@@ -741,61 +858,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const hasEditHistory =
       editHistory.filters.length > 0 || editHistory.crops > 0;
 
-    return hasAdjustments || hasFilter || hasEditHistory;
+    return hasAdjustments || hasFilter || hasEditHistory || hasBeenCropped;
   }
 
   window.addEventListener("beforeunload", handleBeforeUnload);
-
-  // Add keyboard shortcuts
-  document.addEventListener("keydown", function (e) {
-    // Cancel crop with Escape key
-    if (e.key === "Escape" && isCropping) {
-      cancelCrop();
-    }
-
-    // Save with Ctrl+S
-    if (e.key === "s" && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      if (!saveBtn.disabled) {
-        saveBtn.click();
-      }
-    }
-  });
-
-  // Function to check if device is mobile
-  function isMobileDevice() {
-    return (
-      typeof window.orientation !== "undefined" ||
-      navigator.userAgent.indexOf("IEMobile") !== -1
-    );
-  }
-
-  // Add touch support for mobile devices
-  if (isMobileDevice()) {
-    let touchStartX, touchStartY;
-    let touchTimeout;
-
-    editImage.addEventListener("touchstart", function (e) {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-
-      // Start timer for long press
-      touchTimeout = setTimeout(() => {
-        // Handle zoom in on long press
-        const scale =
-          currentScale < MAX_SCALE ? currentScale + SCALE_FACTOR : MIN_SCALE;
-        editImage.style.transform = `scale(${scale})`;
-      }, 500);
-    });
-
-    editImage.addEventListener("touchend", function () {
-      clearTimeout(touchTimeout);
-    });
-
-    editImage.addEventListener("touchmove", function (e) {
-      clearTimeout(touchTimeout);
-    });
-  }
 
   // Initialize tooltips
   const tooltipElements = document.querySelectorAll("[data-tooltip]");
@@ -803,16 +869,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const tooltipText = element.dataset.tooltip;
     element.title = tooltipText;
   });
-
-  // Clean up function
-  function cleanup() {
-    window.removeEventListener("beforeunload", handleBeforeUnload);
-    if (caman) {
-      caman.reset();
-    }
-    editHistory.reset();
-    changesSaved = true;
-  }
 
   // Handle page unload
   function handleBeforeUnload(e) {
@@ -822,19 +878,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Clean up on page unload
-  window.addEventListener("unload", cleanup);
-
   const resetBtn = document.querySelector(".editor-reset-btn");
 
   function resetImage() {
     if (isProcessing || !caman) return;
 
-    // Check if there are any changes to reset
     if (!hasUnsavedChanges()) {
       notify.info("No changes to reset");
       return;
     }
+
+    // Cancel any active cropping
+    cancelCrop();
 
     // Reset all adjustments
     adjustments = {
@@ -872,7 +927,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Reset the image
     isProcessing = true;
-    caman.revert(true);
 
     // Load original image again
     const img = new Image();
@@ -883,6 +937,12 @@ document.addEventListener("DOMContentLoaded", function () {
       canvas.height = this.naturalHeight;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(this, 0, 0);
+
+      // Destroy previous Caman instance
+      if (caman) {
+        caman.reset();
+        caman = null;
+      }
 
       // Reinitialize Caman
       caman = Caman("#editImage", function () {
