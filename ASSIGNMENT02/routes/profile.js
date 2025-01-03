@@ -205,6 +205,27 @@ router.post("/profile/update/password", isAuthenticated, async (req, res) => {
   }
 });
 
+router.post("/profile/remove/password", isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user.googleId && !user.githubId) {
+      res.notify.error("You must have Google or GitHub linked to remove your password.");
+      return res.redirect("/profile");
+    }
+
+    user.password = undefined;
+    await user.save();
+
+    res.notify.success("Password removed successfully");
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Remove password error:", error);
+    res.notify.error("Error removing password");
+    res.redirect("/profile");
+  }
+});
+
 router.post(
   "/profile/avatar/upload",
   isAuthenticated,

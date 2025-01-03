@@ -1056,7 +1056,7 @@ body {
   background-color: #aa0000;
 }
 
-.update-btn {
+.update-email-btn {
   background: #fe0000;
   color: white;
   border: none;
@@ -1066,8 +1066,57 @@ body {
   margin-bottom: 2rem;
 }
 
-.update-btn:hover {
+.update-email-btn:hover {
   background: #aa0000;
+}
+
+.update-password-btn {
+  background: #fe0000;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-password-btn:hover {
+  background: #aa0000;
+}
+
+.remove-password-btn {
+  background: #fe0000;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.remove-password-btn:hover {
+  background: #aa0000;
+}
+
+.password-removal-tip {
+  font-size: 1rem;
+  color: #f5f5f5;
+  margin-top: 0.5rem;
+}
+
+.info-icon {
+  display: inline-block;
+  width: 1.4rem;
+  height: 1.4rem;
+  line-height: 1.4rem;
+  border-radius: 50%;
+  background-color: #fe0000;
+  color: white;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-right: 0.4rem;
+  font-family: sans-serif;
+  user-select: none;
 }
 
 .logout-btn {

@@ -91,10 +91,9 @@
             id="email"
             name="email"
             value="{{user.email}}"
-            required
           />
         </div>
-        <button type="submit" class="update-btn">Update Email</button>
+        <button type="submit" class="update-email-btn">Update Email</button>
       </form>
       {{#if user.githubId}}
         <form action="/profile/unlink/github" method="POST" class="unlink-form">
@@ -117,55 +116,49 @@
     <div class="tab-content security-settings" id="security">
       <h2>Security Settings</h2>
       {{#if user.password}}
-        <form
-          action="/profile/update/password"
-          method="POST"
-          class="settings-form"
-        >
+        <form action="/profile/update/password" method="POST" class="settings-form">
           <div class="form-group">
             <label for="currentPassword">Current Password</label>
-            <input
-              type="password"
-              id="currentPassword"
-              name="currentPassword"
-              required
-            />
+            <input type="password" id="currentPassword" name="currentPassword"/>
           </div>
           <div class="form-group">
             <label for="newPassword">New Password</label>
-            <input type="password" id="newPassword" name="newPassword" required />
+            <input type="password" id="newPassword" name="newPassword"/>
           </div>
           <div class="form-group">
             <label for="confirmPassword">Confirm New Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              required
-            />
+            <input type="password" id="confirmPassword" name="confirmPassword"/>
           </div>
-          <button type="submit" class="update-btn">Update Password</button>
+          <button type="submit" class="update-password-btn">Update Password</button>
         </form>
+        {{#if user.googleId}}
+          <form action="/profile/remove/password" method="POST" class="settings-form">
+            <button type="submit" class="remove-password-btn">Remove Password</button>
+          </form>
+          <p class="password-removal-tip">
+            <span class="info-icon">i</span>
+            Password can be removed as your account is linked with Google or GitHub
+          </p>
+        {{else if user.githubId}}
+          <form action="/profile/remove/password" method="POST" class="settings-form">
+            <button type="submit" class="remove-password-btn">Remove Password</button>
+          </form>
+          <p class="password-removal-tip">
+            <span class="info-icon">i</span>
+            Password can be removed as your account is linked with Google or GitHub
+          </p>
+        {{/if}}
       {{else}}
-        <form
-          action="/profile/add/password"
-          method="POST"
-          class="settings-form"
-        >
+        <form action="/profile/add/password" method="POST" class="settings-form">
           <div class="form-group">
             <label for="newPassword">New Password</label>
-            <input type="password" id="newPassword" name="newPassword" required />
+            <input type="password" id="newPassword" name="newPassword"/>
           </div>
           <div class="form-group">
             <label for="confirmPassword">Confirm New Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              required
-            />
+            <input type="password" id="confirmPassword" name="confirmPassword"/>
           </div>
-          <button type="submit" class="update-btn">Add Password</button>
+          <button type="submit" class="update-password-btn">Add Password</button>
         </form>
       {{/if}}
     </div>
