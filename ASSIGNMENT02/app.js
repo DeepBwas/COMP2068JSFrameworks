@@ -1,6 +1,5 @@
 require("dotenv").config();
 const createError = require("http-errors");
-const helmet = require('helmet');
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");

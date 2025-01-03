@@ -35,7 +35,7 @@ module.exports = function (passport) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://picsforge.onrender.com/auth/google/callback",
+        callbackURL: process.env.GOOGLE_CALLBACK_URL
       },
       async function (accessToken, refreshToken, profile, done) {
         try {
@@ -68,7 +68,7 @@ module.exports = function (passport) {
       {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: "https://picsforge.onrender.com/auth/github/callback",
+        callbackURL: process.env.GITHUB_CALLBACK_URL,
         scope: ["user:email"],
       },
       async function (accessToken, refreshToken, profile, done) {
