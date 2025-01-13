@@ -17,6 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
     sideNav.classList.toggle("active");
   });
 
+  window.addEventListener("scroll", () => {
+    if (sideNav.classList.contains("active")) {
+      hamburger.classList.remove("active");
+      sideNav.classList.remove("active");
+    }
+  
+
   document.addEventListener("click", (e) => {
     if (
       !hamburger.contains(e.target) &&
@@ -591,3 +598,4 @@ function initializeSocialLinks() {
     });
   }
 }
+});
