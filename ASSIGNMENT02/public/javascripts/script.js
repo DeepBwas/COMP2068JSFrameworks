@@ -258,7 +258,7 @@ function resetUploadArea(uploadId) {
   }
 }
 
-function togglePasswordVisibility(fieldId) {
+window.togglePasswordVisibility = function(fieldId) {
   const passwordField = document.getElementById(fieldId);
   const eyeIcon = passwordField.parentElement.querySelector(
     ".password-toggle img"
@@ -400,7 +400,7 @@ function showUpload(uploadId) {
   container.style.visibility = "visible";
 }
 
-function hideUpload(uploadId) {
+window.hideUpload = function(uploadId) {
   const overlay = document.querySelector(".upload-overlay");
   const container = document.getElementById(uploadId);
 
@@ -414,7 +414,7 @@ function hideUpload(uploadId) {
   resetUploadArea(uploadId);
 }
 
-function showDeleteModal(modalId) {
+window.showDeleteModal = function(modalId) {
   const overlay = document.querySelector(".delete-overlay");
   const modal = document.getElementById(modalId);
 
@@ -442,7 +442,7 @@ function hideDeleteModal(modalId) {
   }, 300);
 }
 
-function removeAvatar() {
+window.removeAvatar = function() {
   fetch("/profile/avatar/remove", {
     method: "POST",
     headers: {
@@ -474,7 +474,7 @@ function removeAvatar() {
 
 let activeGalleryImage = null;
 
-function expandGalleryImage(imageId, imageUrl, altText) {
+window.expandGalleryImage = function(imageId, imageUrl, altText) {
   const previousActive = document.querySelector(".gallery-item-active");
   if (previousActive) {
     previousActive.classList.remove("gallery-item-active");
@@ -506,17 +506,18 @@ function expandGalleryImage(imageId, imageUrl, altText) {
   previewContainer.classList.add("gallery-preview-active");
 }
 
-function callDeleteImage() {
+window.callDeleteImage = function() {
   deleteImage(activeGalleryImage);
 }
 
-function callDownloadImage() {
+window.callDownloadImage = function() {
   downloadImage(activeGalleryImage);
 }
 
-function callEditImage() {
+window.callEditImage = function() {
   window.location.href = `/editor/${activeGalleryImage}/edit`;
 }
+
 
 function closeGalleryPreview() {
   activeGalleryImage = null;
