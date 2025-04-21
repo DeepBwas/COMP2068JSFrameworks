@@ -1,4 +1,5 @@
-# PicsForge - Image Editing Web Application
+# [DEPRECATED] PicsForge - Image Editing Web Application
+This application is not being maintained actively.
 
 PicsForge is a full-stack web application that allows users to upload, manage, and edit their images. Built with Node.js, Express, MongoDB, and AWS S3, it provides a secure and efficient platform for image management with features like user authentication, version control, and image editing capabilities.
 
